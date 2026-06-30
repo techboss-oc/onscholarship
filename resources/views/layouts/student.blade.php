@@ -20,6 +20,70 @@
       x-init="if(localStorage.theme==='dark'){darkMode=true;document.documentElement.classList.add('dark')}else{darkMode=false;document.documentElement.classList.remove('dark')}"
       :class="{'dark':darkMode}">
 
+    @if(session('registration_success_popup'))
+        <div
+            x-data="{ open: true }"
+            x-init="setTimeout(() => open = false, 4500)"
+            x-show="open"
+            x-transition.opacity
+            class="fixed inset-0 z-[80] flex items-start justify-center px-4 pt-20 sm:items-center sm:pt-0"
+            x-cloak
+        >
+            <div class="absolute inset-0 bg-[#0f172a]/55 backdrop-blur-sm" @click="open = false"></div>
+
+            <div
+                x-show="open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                class="relative w-full max-w-md overflow-hidden rounded-[28px] border border-white/10 bg-white shadow-[0_25px_80px_rgba(15,23,42,0.28)] dark:bg-[#0f172a]"
+            >
+                <div class="absolute inset-x-0 top-0 h-1" style="background: linear-gradient(90deg, #1FA463 0%, #0D47A1 100%);"></div>
+
+                <div class="p-6 sm:p-7">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-lg" style="background: linear-gradient(135deg, #1FA463 0%, #0D47A1 100%);">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.24em] text-[#1FA463]">Success</p>
+                                <h3 class="mt-1 text-xl font-black brand-font text-[#0f2441] dark:text-white">
+                                    {{ session('registration_success_popup.title') }}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            @click="open = false"
+                            class="rounded-full p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-white/10 dark:hover:text-white"
+                            aria-label="Close success popup"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <p class="mt-5 text-sm sm:text-base leading-7 text-gray-600 dark:text-gray-300">
+                        {{ session('registration_success_popup.message') }}
+                    </p>
+
+                    <div class="mt-6 flex items-center gap-3 rounded-2xl bg-[#f8fafc] px-4 py-3 text-sm font-medium text-[#0f2441] dark:bg-white/5 dark:text-white/85">
+                        <span class="inline-flex h-2.5 w-2.5 rounded-full bg-[#1FA463]"></span>
+                        You have been redirected to your student dashboard.
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Mobile Overlay -->
     <div x-show="sidebarOpen" @click="sidebarOpen=false" class="fixed inset-0 bg-black/40 z-40 lg:hidden" x-cloak></div>
 

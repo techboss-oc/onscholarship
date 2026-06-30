@@ -618,11 +618,32 @@
 </section>
 
 
-<section class="py-20 bg-white dark:bg-[#0b1120]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-14" data-aos="fade-up">
-            <p class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#1FA463;">Success Stories</p>
-            <h3 class="text-3xl md:text-4xl font-extrabold brand-font text-gray-900 dark:text-white">Hear from Our Students</h3>
+<section class="relative overflow-hidden py-20" style="background: linear-gradient(180deg, #08111f 0%, #0f172a 55%, #08111f 100%);">
+    <div class="absolute inset-x-0 top-0 h-40 pointer-events-none" style="background: linear-gradient(180deg, rgba(31,164,99,.08), transparent);"></div>
+    <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-[620px] h-[260px] rounded-full blur-3xl opacity-40 pointer-events-none" style="background: radial-gradient(circle, rgba(31,164,99,.18), transparent 65%);"></div>
+    <div class="absolute bottom-0 right-0 w-[420px] h-[220px] rounded-full blur-3xl opacity-35 pointer-events-none" style="background: radial-gradient(circle, rgba(13,71,161,.18), transparent 65%);"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center mb-12 sm:mb-14" data-aos="fade-up">
+            <p class="text-xs font-bold tracking-[0.28em] uppercase mb-3" style="color:#1FA463;">Success Stories</p>
+            <h3 class="text-3xl sm:text-4xl md:text-5xl font-extrabold brand-font text-white leading-tight">Hear from Our Students</h3>
+            <p class="mt-4 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed text-white/72">
+                Inspiring journeys from African students who secured admission, scholarships, and a smooth transition to university life in China.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-white/80">
+                    <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                    Scholarship Guidance
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-white/80">
+                    <span class="w-2 h-2 rounded-full" style="background:#0D47A1;"></span>
+                    Visa Support
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-4 py-2 text-white/80">
+                    <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                    Real Student Results
+                </span>
+            </div>
         </div>
         <style>
             #testimonial-carousel-track {
@@ -641,114 +662,220 @@
                 outline: none;
                 box-shadow: 0 0 0 4px rgba(31, 164, 99, .25);
             }
+
+            @keyframes testimonialProgress {
+                from {
+                    transform: scaleX(0);
+                }
+
+                to {
+                    transform: scaleX(1);
+                }
+            }
+
+            .testimonial-progress-fill {
+                transform-origin: left center;
+                transform: scaleX(0);
+            }
         </style>
 
         <?php $displayTestimonials = $testimonials ?? collect([]); ?>
 
-        <div id="testimonial-carousel" class="relative max-w-4xl mx-auto" data-aos="fade-up">
+        <div id="testimonial-carousel" class="relative max-w-6xl mx-auto" data-aos="fade-up">
             <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-[520px] h-[220px] rounded-full blur-3xl opacity-40 pointer-events-none" style="background: radial-gradient(circle, rgba(31,164,99,.22), transparent 60%);"></div>
             <div class="absolute -bottom-16 left-10 w-[420px] h-[240px] rounded-full blur-3xl opacity-35 pointer-events-none" style="background: radial-gradient(circle, rgba(13,71,161,.22), transparent 60%);"></div>
 
-            <div class="relative overflow-hidden rounded-3xl border border-gray-100 dark:border-white/10 bg-white dark:bg-[#0f172a] shadow-xl">
-                <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(135deg, rgba(31,164,99,.06), rgba(13,71,161,.06));"></div>
+            <div class="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0f1b31]/85 backdrop-blur-xl shadow-[0_30px_80px_rgba(2,8,23,.45)]">
+                <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(135deg, rgba(31,164,99,.12), rgba(13,71,161,.15));"></div>
+                <div class="absolute inset-x-0 top-0 h-px pointer-events-none" style="background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);"></div>
 
                 <div id="testimonial-carousel-track" aria-live="polite">
                     <?php $__empty_1 = true; $__currentLoopData = $displayTestimonials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $testimonial): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                    <div data-slide class="p-7 sm:p-10">
-                        <div class="flex items-start justify-between gap-6">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: rgba(31,164,99,.12); color:#1FA463;">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                                </svg>
-                            </div>
+                    <div data-slide class="p-5 sm:p-7 lg:p-10">
+                        <div class="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.65fr)] lg:gap-8">
+                            <div class="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 sm:p-7 lg:p-8">
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                    <div class="inline-flex items-center gap-3 self-start rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+                                        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: rgba(31,164,99,.16); color:#34d399;">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="text-[11px] font-bold uppercase tracking-[0.26em] text-white/45">Student Voice</div>
+                                            <div class="text-sm sm:text-base font-semibold text-white/90">Real admission journey</div>
+                                        </div>
+                                    </div>
 
-                            <div class="flex items-center gap-3">
-                                <button type="button" data-prev class="w-11 h-11 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition text-gray-700 dark:text-white/80">
-                                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <button type="button" data-next class="w-11 h-11 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition text-gray-700 dark:text-white/80">
-                                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="mt-8">
-                            <p class="text-lg sm:text-xl leading-relaxed text-gray-800 dark:text-white/90">
-                                “<?php echo $testimonial->content; ?>”
-                            </p>
-                        </div>
-
-                        <div class="mt-8 flex items-center justify-between gap-6 flex-wrap">
-                            <div class="flex items-center gap-4 min-w-0">
-                                <?php if($testimonial->image): ?>
-                                <img src="<?php echo e(Storage::url($testimonial->image)); ?>" class="w-12 h-12 rounded-full object-cover border-2 border-[#1FA463]" alt="<?php echo e($testimonial->name); ?>">
-                                <?php else: ?>
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white border-2 border-[#1FA463]" style="background: linear-gradient(135deg, #0D47A1, #1FA463);">
-                                    <?php echo e(substr($testimonial->name, 0, 1)); ?>
-
+                                    <div class="flex items-center gap-3 self-start">
+                                        <button type="button" data-prev class="w-11 h-11 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition text-white/80">
+                                            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" data-next class="w-11 h-11 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition text-white/80">
+                                            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
-                                <?php endif; ?>
-                                <div class="min-w-0">
-                                    <div class="font-black brand-font text-gray-900 dark:text-white truncate"><?php echo e($testimonial->name); ?></div>
-                                    <div class="text-sm text-gray-600 dark:text-white/70 truncate"><?php echo e($testimonial->university ?? 'Student'); ?></div>
+
+                                <div class="mt-6">
+                                    <p class="text-lg sm:text-[1.35rem] leading-8 sm:leading-9 text-white/92">
+                                        “<?php echo $testimonial->content; ?>”
+                                    </p>
+                                </div>
+
+                                <div class="mt-6 flex flex-wrap items-center gap-3">
+                                    <div class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2" aria-label="5 star rating">
+                                        <?php for($star = 0; $star < 5; $star++): ?>
+                                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="#FBBF24" aria-hidden="true">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <?php endfor; ?>
+                                            <span class="ml-2 text-xs sm:text-sm font-semibold text-white/80">5.0 Student Rating</span>
+                                    </div>
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-xs sm:text-sm font-medium text-white/72">
+                                        <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                                        Scholarship Support
+                                    </span>
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-xs sm:text-sm font-medium text-white/72">
+                                        <span class="w-2 h-2 rounded-full" style="background:#0D47A1;"></span>
+                                        Admission Guidance
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-sm font-bold text-gray-800 dark:text-white/80">
-                                <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
-                                Verified Student
+                            <div class="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-5 sm:p-6 lg:p-7">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.24em] text-white/60">
+                                        Student Profile
+                                    </div>
+                                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs font-bold text-white/85">
+                                        <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                                        Verified Student
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 flex items-center gap-4 min-w-0">
+                                    <?php if($testimonial->image): ?>
+                                    <img src="<?php echo e(Storage::url($testimonial->image)); ?>" class="w-16 h-16 rounded-full object-cover border-2 border-[#1FA463] shadow-lg" alt="<?php echo e($testimonial->name); ?>">
+                                    <?php else: ?>
+                                    <div class="w-16 h-16 rounded-full flex items-center justify-center font-black text-xl text-white border-2 border-[#1FA463] shadow-lg" style="background: linear-gradient(135deg, #0D47A1, #1FA463);">
+                                        <?php echo e(substr($testimonial->name, 0, 1)); ?>
+
+                                    </div>
+                                    <?php endif; ?>
+                                    <div class="min-w-0">
+                                        <div class="font-black brand-font text-white text-lg leading-tight"><?php echo e($testimonial->name); ?></div>
+                                        <div class="mt-1 text-sm text-white/70 leading-relaxed break-words"><?php echo e($testimonial->university ?? 'Student'); ?></div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 space-y-3">
+                                    <div class="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <div class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">Outcome</div>
+                                        <div class="mt-1 text-sm text-white/80">Successfully guided from application stage to study placement in China.</div>
+                                    </div>
+                                    <div class="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <div class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">Why It Matters</div>
+                                        <div class="mt-1 text-sm text-white/80">Shows the value of clear support, scholarship advice, and a smoother student journey.</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <?php $__currentLoopData = [['Sarah M.', 'University of Electronic Science', 'Onscholarship made my dream of studying in China a reality. The process was seamless and the scholarship support was incredible!'],['David K.', 'Tsinghua University', 'From the application to visa processing, their team was always there to guide me. I highly recommend their services to any student in Africa.'],['Grace A.', 'Zhejiang University', 'I am so grateful for the opportunity. The resources provided helped me settle quickly in my new university environment!']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $fbTest): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div data-slide class="p-7 sm:p-10">
-                        <div class="flex items-start justify-between gap-6">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: rgba(31,164,99,.12); color:#1FA463;">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                                </svg>
-                            </div>
+                    <div data-slide class="p-5 sm:p-7 lg:p-10">
+                        <div class="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.65fr)] lg:gap-8">
+                            <div class="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 sm:p-7 lg:p-8">
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                    <div class="inline-flex items-center gap-3 self-start rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+                                        <div class="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: rgba(31,164,99,.16); color:#34d399;">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="text-[11px] font-bold uppercase tracking-[0.26em] text-white/45">Student Voice</div>
+                                            <div class="text-sm sm:text-base font-semibold text-white/90">Real admission journey</div>
+                                        </div>
+                                    </div>
 
-                            <div class="flex items-center gap-3">
-                                <button type="button" data-prev class="w-11 h-11 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition text-gray-700 dark:text-white/80">
-                                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <button type="button" data-next class="w-11 h-11 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition text-gray-700 dark:text-white/80">
-                                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="mt-8">
-                            <p class="text-lg sm:text-xl leading-relaxed text-gray-800 dark:text-white/90">
-                                “<?php echo e($fbTest[2]); ?>”
-                            </p>
-                        </div>
-
-                        <div class="mt-8 flex items-center justify-between gap-6 flex-wrap">
-                            <div class="flex items-center gap-4 min-w-0">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center font-black text-white border-2 border-[#1FA463]" style="background: linear-gradient(135deg, #0D47A1, #1FA463);">
-                                    <?php echo e(substr($fbTest[0], 0, 1)); ?>
-
+                                    <div class="flex items-center gap-3 self-start">
+                                        <button type="button" data-prev class="w-11 h-11 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition text-white/80">
+                                            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" data-next class="w-11 h-11 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition text-white/80">
+                                            <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="min-w-0">
-                                    <div class="font-black brand-font text-gray-900 dark:text-white truncate"><?php echo e($fbTest[0]); ?></div>
-                                    <div class="text-sm text-gray-600 dark:text-white/70 truncate"><?php echo e($fbTest[1]); ?></div>
+
+                                <div class="mt-6">
+                                    <p class="text-lg sm:text-[1.35rem] leading-8 sm:leading-9 text-white/92">
+                                        “<?php echo e($fbTest[2]); ?>”
+                                    </p>
+                                </div>
+
+                                <div class="mt-6 flex flex-wrap items-center gap-3">
+                                    <div class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2" aria-label="5 star rating">
+                                        <?php for($star = 0; $star < 5; $star++): ?>
+                                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="#FBBF24" aria-hidden="true">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <?php endfor; ?>
+                                            <span class="ml-2 text-xs sm:text-sm font-semibold text-white/80">5.0 Student Rating</span>
+                                    </div>
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-xs sm:text-sm font-medium text-white/72">
+                                        <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                                        Scholarship Support
+                                    </span>
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2 text-xs sm:text-sm font-medium text-white/72">
+                                        <span class="w-2 h-2 rounded-full" style="background:#0D47A1;"></span>
+                                        Admission Guidance
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-sm font-bold text-gray-800 dark:text-white/80">
-                                <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
-                                Verified Student
+                            <div class="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-5 sm:p-6 lg:p-7">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.24em] text-white/60">
+                                        Student Profile
+                                    </div>
+                                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/6 px-3 py-1.5 text-xs font-bold text-white/85">
+                                        <span class="w-2 h-2 rounded-full" style="background:#1FA463;"></span>
+                                        Verified Student
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 flex items-center gap-4 min-w-0">
+                                    <div class="w-16 h-16 rounded-full flex items-center justify-center font-black text-xl text-white border-2 border-[#1FA463] shadow-lg" style="background: linear-gradient(135deg, #0D47A1, #1FA463);">
+                                        <?php echo e(substr($fbTest[0], 0, 1)); ?>
+
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-black brand-font text-white text-lg leading-tight"><?php echo e($fbTest[0]); ?></div>
+                                        <div class="mt-1 text-sm text-white/70 leading-relaxed break-words"><?php echo e($fbTest[1]); ?></div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 space-y-3">
+                                    <div class="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <div class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">Outcome</div>
+                                        <div class="mt-1 text-sm text-white/80">Successfully guided from application stage to study placement in China.</div>
+                                    </div>
+                                    <div class="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <div class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/45">Why It Matters</div>
+                                        <div class="mt-1 text-sm text-white/80">Shows the value of clear support, scholarship advice, and a smoother student journey.</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -757,7 +884,22 @@
                 </div>
             </div>
 
-            <div class="mt-6 flex items-center justify-center gap-2" data-dots></div>
+            <div class="mt-7 flex flex-col items-center gap-4">
+                <div class="sm:hidden inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-medium text-white/70">
+                    <svg class="w-4 h-4 text-[#34d399]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7l-5 5 5 5M16 7l5 5-5 5" />
+                    </svg>
+                    Swipe to explore more student stories
+                </div>
+
+                <div class="w-full max-w-md">
+                    <div class="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                        <div class="testimonial-progress-fill h-full rounded-full" data-progress-fill style="background: linear-gradient(90deg, #1FA463 0%, #0D47A1 100%);"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center gap-2" data-dots></div>
+            </div>
         </div>
 
         <script>
@@ -772,8 +914,18 @@
                 const prevButtons = Array.from(root.querySelectorAll('[data-prev]'));
                 const nextButtons = Array.from(root.querySelectorAll('[data-next]'));
                 const dotsWrap = root.querySelector('[data-dots]');
+                const progressFill = root.querySelector('[data-progress-fill]');
+                const AUTOPLAY_MS = 6500;
                 let index = 0;
                 let autoplayTimer = null;
+
+                function restartProgress() {
+                    if (!progressFill) return;
+                    progressFill.style.animation = 'none';
+                    progressFill.offsetWidth;
+                    progressFill.style.animation = `testimonialProgress ${AUTOPLAY_MS}ms linear forwards`;
+                    progressFill.style.animationPlayState = 'running';
+                }
 
                 function setIndex(nextIndex) {
                     if (!slides.length) return;
@@ -796,8 +948,14 @@
                     setIndex(index - 1);
                 }
 
-                prevButtons.forEach((btn) => btn.addEventListener('click', prev));
-                nextButtons.forEach((btn) => btn.addEventListener('click', next));
+                prevButtons.forEach((btn) => btn.addEventListener('click', () => {
+                    prev();
+                    startAutoplay();
+                }));
+                nextButtons.forEach((btn) => btn.addEventListener('click', () => {
+                    next();
+                    startAutoplay();
+                }));
 
                 if (dotsWrap) {
                     dotsWrap.innerHTML = '';
@@ -809,19 +967,26 @@
                         b.style.opacity = '.28';
                         b.style.transform = 'scale(.9)';
                         b.style.boxShadow = '0 0 0 3px rgba(31,164,99,.12)';
-                        b.addEventListener('click', () => setIndex(i));
+                        b.addEventListener('click', () => {
+                            setIndex(i);
+                            startAutoplay();
+                        });
                         dotsWrap.appendChild(b);
                     });
                 }
 
                 function startAutoplay() {
                     stopAutoplay();
-                    autoplayTimer = window.setInterval(next, 6500);
+                    autoplayTimer = window.setInterval(next, AUTOPLAY_MS);
+                    restartProgress();
                 }
 
                 function stopAutoplay() {
                     if (autoplayTimer) window.clearInterval(autoplayTimer);
                     autoplayTimer = null;
+                    if (progressFill) {
+                        progressFill.style.animationPlayState = 'paused';
+                    }
                 }
 
                 root.addEventListener('mouseenter', stopAutoplay);
@@ -846,6 +1011,7 @@
                     if (Math.abs(touchDeltaX) > 50) {
                         if (touchDeltaX < 0) next();
                         else prev();
+                        startAutoplay();
                     }
                 });
 

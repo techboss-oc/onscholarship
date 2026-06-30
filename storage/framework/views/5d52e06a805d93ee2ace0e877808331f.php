@@ -1,6 +1,4 @@
-@extends('layouts.agent')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="space-y-6">
         <div class="rounded-[28px] border border-[#0f2441]/10 bg-gradient-to-br from-[#0f2441] via-[#12315b] to-[#0d47a1] p-6 sm:p-8 text-white shadow-[0_24px_60px_rgba(15,36,65,0.22)] overflow-hidden relative">
             <div class="absolute -top-16 -right-10 h-48 w-48 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
@@ -36,7 +34,7 @@
                 <div class="relative self-start lg:self-center">
                     <div class="rounded-[28px] border border-white/15 bg-white/10 backdrop-blur-md p-5 sm:p-6 min-w-[260px] shadow-2xl">
                         <div class="flex items-center justify-between gap-4">
-                            <img src="{{ asset('images/logo.png') }}" alt="Onscholarship" class="h-10 w-auto object-contain brightness-0 invert">
+                            <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Onscholarship" class="h-10 w-auto object-contain brightness-0 invert">
                             <div class="rounded-full bg-amber-400/20 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-amber-200">
                                 Pending
                             </div>
@@ -45,7 +43,7 @@
                         <div class="mt-6 space-y-4">
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Agent</p>
-                                <p class="mt-1 text-lg font-bold text-white">{{ auth()->user()->name }}</p>
+                                <p class="mt-1 text-lg font-bold text-white"><?php echo e(auth()->user()->name); ?></p>
                             </div>
                             <div>
                                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Current Access</p>
@@ -125,12 +123,12 @@
                 </div>
 
                 <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('home') }}" class="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-bold text-white transition hover:opacity-95"
+                    <a href="<?php echo e(route('home')); ?>" class="inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-bold text-white transition hover:opacity-95"
                        style="background: linear-gradient(135deg, #0D47A1 0%, #1FA463 100%); box-shadow: 0 14px 30px rgba(13,71,161,.22);">
                         Return to Homepage
                     </a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
+                    <form method="POST" action="<?php echo e(route('logout')); ?>">
+                        <?php echo csrf_field(); ?>
                         <button type="submit" class="inline-flex w-full sm:w-auto items-center justify-center rounded-2xl border border-gray-200 px-5 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-white/5">
                             Sign Out
                         </button>
@@ -139,4 +137,6 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.agent', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\hainan\resources\views/agent/pending.blade.php ENDPATH**/ ?>

@@ -1259,6 +1259,17 @@ ALTER TABLE `agency_user_profiles`
 --
 -- Constraints for table `agent_profiles`
 --
+UPDATE `agent_profiles` ap
+LEFT JOIN `users` u ON u.`id` = ap.`approved_by`
+SET ap.`approved_by` = NULL
+WHERE ap.`approved_by` IS NOT NULL
+  AND u.`id` IS NULL;
+
+DELETE ap
+FROM `agent_profiles` ap
+LEFT JOIN `users` u ON u.`id` = ap.`user_id`
+WHERE u.`id` IS NULL;
+
 ALTER TABLE `agent_profiles`
   ADD CONSTRAINT `agent_profiles_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `agent_profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
