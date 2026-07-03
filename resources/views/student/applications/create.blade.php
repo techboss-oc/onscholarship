@@ -10,6 +10,11 @@
     <form action="{{ route('student.applications.store') }}" method="POST">
         @csrf
 
+        <div class="mb-6 rounded-2xl border border-[#f15a24]/20 bg-[#f15a24]/10 px-4 py-4 text-sm text-[#0f2441] dark:text-white">
+            <p class="font-bold">Application Fee: {{ $applicationFee['currency'] }} {{ number_format($applicationFee['amount'], 2) }}</p>
+            <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">After this form, you will continue to the application fee payment step before your documents and admission can be processed.</p>
+        </div>
+
         <div class="mb-5">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">University & Program <span class="text-red-500">*</span></label>
             <select name="program_id" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]" x-data x-select>
@@ -59,7 +64,7 @@
                 Cancel
             </a>
             <button type="submit" class="px-8 py-2.5 bg-[#f15a24] text-white font-bold rounded-xl hover:bg-[#d94a1c] transition shadow-md">
-                Submit Application
+                Continue to Fee Payment
             </button>
         </div>
     </form>

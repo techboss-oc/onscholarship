@@ -49,6 +49,36 @@
                 <p class="text-sm text-gray-500 italic">No notes provided by administration yet.</p>
             @endif
         </div>
+
+        <div class="admin-glass p-6 rounded-3xl border border-gray-200 dark:border-gray-700 mt-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Payment Overview</h3>
+            <div class="space-y-3 text-sm">
+                <div class="flex items-center justify-between rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 px-4 py-3">
+                    <span class="text-gray-500">Application Fee</span>
+                    <span class="font-bold text-gray-900 dark:text-white">{{ $application->application_fee_currency ?: 'USD' }} {{ number_format((float) $application->application_fee_amount, 2) }}</span>
+                </div>
+                <div class="flex items-center justify-between rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 px-4 py-3">
+                    <span class="text-gray-500">Service Charge</span>
+                    <span class="font-bold text-[#f15a24]">{{ $application->service_charge_currency ?: 'USD' }} {{ number_format((float) $application->service_charge_amount, 2) }}</span>
+                </div>
+                <div class="flex items-center justify-between rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700 px-4 py-3">
+                    <span class="text-gray-500">Service Charge Status</span>
+                    <span class="font-bold {{ $application->service_charge_status === 'paid' ? 'text-emerald-600 dark:text-emerald-400' : ($application->service_charge_status === 'waived' ? 'text-blue-600 dark:text-blue-400' : 'text-amber-600 dark:text-amber-400') }}">
+                        {{ strtoupper($application->service_charge_status ?: 'unpaid') }}
+                    </span>
+                </div>
+            </div>
+
+            @if(in_array($application->status, ['accepted', 'offer_letter_issued', 'visa_processing'], true) && !in_array($application->service_charge_status, ['paid', 'waived'], true))
+                <div class="mt-5 rounded-2xl border border-[#f15a24]/20 bg-[#f15a24]/10 p-4">
+                    <p class="text-sm font-bold text-[#0f2441] dark:text-white">This application is ready for service charge payment.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Choose Paystack or Flutterwave to continue the student admission process.</p>
+                    <a href="{{ route('agent.applications.service_charge', $application->id) }}" class="mt-4 inline-flex px-4 py-2 bg-[#f15a24] text-white rounded-xl text-sm font-bold hover:bg-[#d94a1c] transition">
+                        Pay Service Charge
+                    </a>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 @endsection

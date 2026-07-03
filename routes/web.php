@@ -136,6 +136,9 @@ function registerAppRoutes($prefix = '')
             Route::get('/agents', [\App\Http\Controllers\Admin\AgentController::class, 'index'])->name('agents.index');
             Route::post('/agents/{id}/approve', [\App\Http\Controllers\Admin\AgentController::class, 'approve'])->name('agents.approve');
             Route::post('/agents/{id}/suspend', [\App\Http\Controllers\Admin\AgentController::class, 'suspend'])->name('agents.suspend');
+            Route::get('/contact-requests', [\App\Http\Controllers\Admin\ContactRequestController::class, 'index'])->name('contact_requests.index');
+            Route::get('/contact-requests/{id}', [\App\Http\Controllers\Admin\ContactRequestController::class, 'show'])->name('contact_requests.show');
+            Route::post('/contact-requests/{id}/status', [\App\Http\Controllers\Admin\ContactRequestController::class, 'updateStatus'])->name('contact_requests.status');
             Route::get('/universities', [\App\Http\Controllers\Admin\UniversityController::class, 'index'])->name('universities.index');
             Route::get('/universities/create', [\App\Http\Controllers\Admin\UniversityController::class, 'create'])->name('universities.create');
             Route::post('/universities', [\App\Http\Controllers\Admin\UniversityController::class, 'store'])->name('universities.store');
@@ -160,11 +163,16 @@ function registerAppRoutes($prefix = '')
             // Students
             Route::get('/students', [\App\Http\Controllers\Admin\StudentController::class, 'index'])->name('students.index');
             Route::get('/students/{id}', [\App\Http\Controllers\Admin\StudentController::class, 'show'])->name('students.show');
+            Route::get('/students/{id}/documents/{documentId}', [\App\Http\Controllers\Admin\StudentController::class, 'viewDocument'])->name('students.documents.view');
+            Route::get('/students/{id}/documents/{documentId}/stream', [\App\Http\Controllers\Admin\StudentController::class, 'streamDocument'])->name('students.documents.stream');
 
             // Applications
             Route::get('/applications', [\App\Http\Controllers\Admin\ApplicationController::class, 'index'])->name('applications.index');
             Route::get('/applications/{id}', [\App\Http\Controllers\Admin\ApplicationController::class, 'show'])->name('applications.show');
             Route::patch('/applications/{id}/status', [\App\Http\Controllers\Admin\ApplicationController::class, 'updateStatus'])->name('applications.status');
+            Route::get('/application-fees', [\App\Http\Controllers\Admin\ApplicationFeeController::class, 'index'])->name('application_fees.index');
+            Route::put('/application-fees/settings', [\App\Http\Controllers\Admin\ApplicationFeeController::class, 'updateSettings'])->name('application_fees.settings');
+            Route::patch('/application-fees/{id}', [\App\Http\Controllers\Admin\ApplicationFeeController::class, 'updateApplicationFee'])->name('application_fees.update');
 
             // Settings
             Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
@@ -199,6 +207,12 @@ function registerAppRoutes($prefix = '')
 
                 // Applications
                 Route::get('/applications', [AgentApplicationController::class, 'index'])->name('applications.index');
+                Route::get('/applications/create', [AgentApplicationController::class, 'create'])->name('applications.create');
+                Route::post('/applications', [AgentApplicationController::class, 'store'])->name('applications.store');
+                Route::get('/applications/payment', [AgentApplicationController::class, 'payment'])->name('applications.payment');
+                Route::post('/applications/payment', [AgentApplicationController::class, 'completePayment'])->name('applications.payment.complete');
+                Route::get('/applications/{id}/service-charge', [AgentApplicationController::class, 'serviceChargePayment'])->name('applications.service_charge');
+                Route::post('/applications/{id}/service-charge', [AgentApplicationController::class, 'completeServiceChargePayment'])->name('applications.service_charge.complete');
                 Route::get('/applications/{id}', [AgentApplicationController::class, 'show'])->name('applications.show');
                 Route::get('/find-programs', [\App\Http\Controllers\ProgramSearchController::class, 'index'])->name('programs.search');
                 Route::get('/scholarships', [\App\Http\Controllers\ScholarshipSearchController::class, 'index'])->name('scholarships');
@@ -235,6 +249,10 @@ function registerAppRoutes($prefix = '')
             Route::get('/applications', [\App\Http\Controllers\Student\StudentController::class, 'applications'])->name('applications.index');
             Route::get('/applications/create', [\App\Http\Controllers\Student\StudentController::class, 'createApplication'])->name('applications.create');
             Route::post('/applications', [\App\Http\Controllers\Student\StudentController::class, 'storeApplication'])->name('applications.store');
+            Route::get('/applications/payment', [\App\Http\Controllers\Student\StudentController::class, 'applicationPayment'])->name('applications.payment');
+            Route::post('/applications/payment', [\App\Http\Controllers\Student\StudentController::class, 'completeApplicationPayment'])->name('applications.payment.complete');
+            Route::get('/applications/{id}/service-charge', [\App\Http\Controllers\Student\StudentController::class, 'serviceChargePayment'])->name('applications.service_charge');
+            Route::post('/applications/{id}/service-charge', [\App\Http\Controllers\Student\StudentController::class, 'completeServiceChargePayment'])->name('applications.service_charge.complete');
             Route::get('/find-programs', [\App\Http\Controllers\ProgramSearchController::class, 'index'])->name('programs.search');
             Route::get('/scholarships', [\App\Http\Controllers\ScholarshipSearchController::class, 'index'])->name('scholarships');
 

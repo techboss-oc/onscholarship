@@ -18,6 +18,7 @@ class University extends Model
         'province',
         'country',
         'logo',
+        'cover_image',
         'description',
         'website',
         'established_year',

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth dark">
 
 <head>
     <meta charset="utf-8">
@@ -19,13 +19,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <!-- Prevent flash of wrong theme before Alpine loads -->
+    <!-- Force dark theme on first paint -->
     <script>
         (function() {
-            var dark = localStorage.theme === 'dark' ||
-                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme:dark)').matches);
-            if (dark) document.documentElement.classList.add('dark');
-            else document.documentElement.classList.remove('dark');
+            localStorage.theme = 'dark';
+            document.documentElement.classList.add('dark');
         })();
     </script>
 
@@ -204,11 +202,107 @@
             background: linear-gradient(145deg, #1e3a5f 0%, #0f2441 50%, #0d3321 100%);
             opacity: .5;
         }
+
+        .translate-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .55rem .8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: rgba(255, 255, 255, .06);
+            color: rgba(255, 255, 255, .82);
+            font-size: .78rem;
+            font-weight: 700;
+            transition: all .2s ease;
+        }
+
+        .translate-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .11);
+            border-color: rgba(255, 255, 255, .18);
+        }
+
+        .translate-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + .7rem);
+            width: 210px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(15, 31, 60, .97);
+            box-shadow: 0 16px 40px rgba(2, 8, 23, .35);
+            padding: .55rem;
+            z-index: 240;
+        }
+
+        .translate-option {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, .78);
+            padding: .75rem .8rem;
+            border-radius: 14px;
+            font-size: .82rem;
+            font-weight: 600;
+            text-align: left;
+            transition: all .18s ease;
+        }
+
+        .translate-option:hover,
+        .translate-option.active {
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+        }
+
+        .mobile-translate {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: .6rem;
+        }
+
+        .mobile-translate button {
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 14px;
+            padding: .8rem .9rem;
+            font-size: .8rem;
+            font-weight: 700;
+            transition: all .2s ease;
+        }
+
+        .goog-te-banner-frame.skiptranslate,
+        .skiptranslate iframe,
+        .goog-te-balloon-frame,
+        .goog-te-menu-frame,
+        .VIpgJd-ZVi9od-ORHb,
+        .VIpgJd-ZVi9od-aZ2wEe,
+        .VIpgJd-ZVi9od-aZ2wEe-OiiCO,
+        .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+        .VIpgJd-ZVi9od-l4eHX-hSRGPd,
+        .VIpgJd-ZVi9od-SmfZ,
+        iframe[src*="translate.google"],
+        iframe[class*="VIpgJd"] {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        #google_translate_element,
+        .goog-logo-link,
+        .goog-te-gadget {
+            display: none !important;
+        }
     </style>
 </head>
 
 <body class="font-sans antialiased bg-white dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 transition-colors duration-300"
-    x-data="{ mobileOpen: false, darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) }">
+    x-data="{ mobileOpen: false }">
 
     <!-- Preloader -->
     <div id="preloader">
@@ -272,29 +366,43 @@
 
                 <!-- RIGHT ACTIONS (desktop) -->
                 <div class="hidden md:flex items-center gap-3 flex-shrink-0">
-                    <!-- Globe/Language -->
-                    <button title="Language" class="flex items-center justify-center text-white/60 hover:text-white transition pr-1">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                        </svg>
-                    </button>
-
-                    <!-- Dark mode pill toggle -->
-                    <div class="flex items-center gap-2">
-                        <button @click="darkMode = !darkMode; localStorage.theme = darkMode ? 'dark' : 'light'; if(darkMode) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }"
-                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#0D47A1] focus:ring-offset-2"
-                            :class="darkMode ? 'bg-slate-700' : 'bg-[#0D47A1]'">
-                            <span class="sr-only">Toggle Dark Mode</span>
-                            <span :class="darkMode ? 'translate-x-6' : 'translate-x-1'"
-                                class="inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white shadow transition-transform duration-300">
-                                <svg x-show="!darkMode" class="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zm3.536 1.464a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414-1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 010-2h1a1 1 0 011 1zm-2.93 5.657a1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414l.707.707a1 1 0 010 1.414zM10 18a1 1 0 01-1-1v-1a1 1 0 012 0v1a1 1 0 01-1 1zm-5.657-2.93a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 10a1 1 0 011-1h1a1 1 0 010 2H5a1 1 0 01-1-1zm1.757-5.657a1 1 0 011.414 0l.707.707A1 1 0 016.464 6.464l-.707-.707a1 1 0 010-1.414zM10 7a3 3 0 100 6 3 3 0 000-6z" fill-rule="evenodd" clip-rule="evenodd" />
-                                </svg>
-                                <svg x-cloak x-show="darkMode" class="w-2.5 h-2.5 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                                </svg>
-                            </span>
+                    <div class="relative" x-data="{ open: false }">
+                        <button type="button"
+                            @click="open = !open"
+                            @click.away="open = false"
+                            class="translate-toggle"
+                            title="Translate Page">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                            <span id="current-language-label">English</span>
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
+
+                        <div x-show="open" x-cloak x-transition.opacity class="translate-menu">
+                            <button type="button" class="translate-option active" data-language-option="en" onclick="setSiteLanguage('en');">
+                                <span>English</span>
+                                <span>EN</span>
+                            </button>
+                            <button type="button" class="translate-option" data-language-option="fr" onclick="setSiteLanguage('fr');">
+                                <span>French</span>
+                                <span>FR</span>
+                            </button>
+                            <button type="button" class="translate-option" data-language-option="es" onclick="setSiteLanguage('es');">
+                                <span>Spanish</span>
+                                <span>ES</span>
+                            </button>
+                            <button type="button" class="translate-option" data-language-option="ar" onclick="setSiteLanguage('ar');">
+                                <span>Arabic</span>
+                                <span>AR</span>
+                            </button>
+                            <button type="button" class="translate-option" data-language-option="zh-CN" onclick="setSiteLanguage('zh-CN');">
+                                <span>Chinese</span>
+                                <span>ZH</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Login / CTA -->
@@ -322,7 +430,7 @@
     <div class="mobile-overlay" :class="{ 'open': mobileOpen }" @click="mobileOpen = false"></div>
 
     <!-- Mobile Menu Panel -->
-    <div class="mobile-menu" :class="{ 'open': mobileOpen, 'bg-[#0f172a]': $store.theme.dark, 'bg-white': !$store.theme.dark }" role="dialog" aria-modal="true">
+    <div class="mobile-menu bg-[#0b1120] text-white" :class="{ 'open': mobileOpen }" role="dialog" aria-modal="true">
 
         <!-- Panel Header with gradient strip -->
         <div class="flex items-center justify-between px-5 py-4 bg-[#0D1F3C]/95 border-b border-white/10">
@@ -347,9 +455,9 @@
                           {{ request()->routeIs($link['match'])
                               ? 'bg-blue-600 text-white shadow-sm shadow-blue-200'
                               : '' }}"
-                :class="!{{ request()->routeIs($link['match']) ? 'true' : 'false' }} && ($store.theme.dark ? 'text-gray-300 hover:bg-white/10 hover:text-white' : 'text-gray-600 hover:bg-blue-50 hover:text-[#0D47A1]')">
+                :class="!{{ request()->routeIs($link['match']) ? 'true' : 'false' }} && 'text-white/80 hover:bg-white/10 hover:text-white'">
                 <span class="w-1.5 h-1.5 rounded-full flex-shrink-0
-                                {{ request()->routeIs($link['match']) ? 'bg-white' : 'bg-gray-300' }}"></span>
+                                {{ request()->routeIs($link['match']) ? 'bg-white' : 'bg-white/25' }}"></span>
                 {{ $link['label'] }}
                 @if(request()->routeIs($link['match']))
                 <svg class="ml-auto w-4 h-4 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,32 +469,38 @@
         </nav>
 
         <!-- Panel Footer -->
-        <div class="px-5 py-5 space-y-3"
-            :class="$store.theme.dark ? 'border-t border-white/10 bg-[#0b1120]' : 'border-t border-gray-100 bg-gray-50'">
-            <!-- Dark mode row -->
-            <div class="flex items-center justify-between mb-1">
-                <span class="text-sm font-semibold" :class="$store.theme.dark ? 'text-gray-300' : 'text-gray-600'">Dark Mode</span>
-                <button @click="$store.theme.toggle()"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none"
-                    :class="$store.theme.dark ? 'bg-indigo-600' : 'bg-[#0D47A1]'">
-                    <span :class="$store.theme.dark ? 'translate-x-6' : 'translate-x-1'"
-                        class="inline-flex h-4 w-4 transform items-center justify-center rounded-full bg-white shadow transition-transform duration-300">
-                        <svg x-show="!$store.theme.dark" class="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zm3.536 1.464a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414-1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 010-2h1a1 1 0 011 1zm-2.93 5.657a1 1 0 01-1.414 0l-.707-.707a1 1 0 011.414-1.414l.707.707a1 1 0 010 1.414zM10 18a1 1 0 01-1-1v-1a1 1 0 012 0v1a1 1 0 01-1 1zm-5.657-2.93a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 10a1 1 0 011-1h1a1 1 0 010 2H5a1 1 0 01-1-1zm1.757-5.657a1 1 0 011.414 0l.707.707A1 1 0 016.464 6.464l-.707-.707a1 1 0 010-1.414zM10 7a3 3 0 100 6 3 3 0 000-6z" fill-rule="evenodd" clip-rule="evenodd" />
-                        </svg>
-                        <svg x-show="$store.theme.dark" class="w-2.5 h-2.5 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                        </svg>
-                    </span>
-                </button>
+        <div class="px-5 py-5 space-y-3 border-t border-white/10 bg-[#0D1F3C]/95">
+            <div>
+                <div class="mb-2 text-sm font-semibold text-white/80">Language</div>
+                <div class="mobile-translate">
+                    <button type="button" data-language-option="en"
+                        @click="setSiteLanguage('en'); mobileOpen = false"
+                        class="bg-white/10 text-white hover:bg-white/15 border border-white/10">
+                        English
+                    </button>
+                    <button type="button" data-language-option="fr"
+                        @click="setSiteLanguage('fr'); mobileOpen = false"
+                        class="bg-white/10 text-white hover:bg-white/15 border border-white/10">
+                        French
+                    </button>
+                    <button type="button" data-language-option="es"
+                        @click="setSiteLanguage('es'); mobileOpen = false"
+                        class="bg-white/10 text-white hover:bg-white/15 border border-white/10">
+                        Spanish
+                    </button>
+                    <button type="button" data-language-option="ar"
+                        @click="setSiteLanguage('ar'); mobileOpen = false"
+                        class="bg-white/10 text-white hover:bg-white/15 border border-white/10">
+                        Arabic
+                    </button>
+                </div>
             </div>
 
             @auth
             <a href="{{ route('dashboard') }}" class="block w-full text-center font-bold text-white rounded-xl py-3 text-sm hover:opacity-90 transition" style="background:#0D47A1;">Go to Dashboard</a>
             @else
-            <a href="{{ route('login') }}" class="block w-full text-center font-bold rounded-xl py-3 text-sm transition border-2"
-                :class="$store.theme.dark ? 'text-blue-400 border-blue-600 hover:bg-blue-900/30' : 'text-[#0D47A1] border-[#0D47A1] hover:bg-blue-50'">Log In</a>
-            <a href="{{ route('register') }}" class="block w-full text-center font-bold text-white rounded-xl py-3 text-sm hover:opacity-90 transition" style="background:#1FA463; box-shadow:0 4px 14px rgba(31,164,99,.35);">Apply Now — It's Free</a>
+            <a href="{{ route('login') }}" class="block w-full text-center font-bold rounded-xl py-3 text-sm transition border-2 text-blue-200 border-blue-500/70 hover:bg-blue-900/30">Log In</a>
+            <a href="{{ route('register') }}" class="block w-full text-center font-bold text-white rounded-xl py-3 text-sm hover:opacity-90 transition" style="background:#1FA463; box-shadow:0 4px 14px rgba(31,164,99,.35);">Apply Now</a>
             @endauth
         </div>
     </div>
@@ -394,6 +508,7 @@
     <!-- ============================================================
          MAIN CONTENT
     ============================================================ -->
+    <div id="google_translate_element" aria-hidden="true"></div>
     <main>
         @yield('content')
         {{ $slot ?? '' }}
@@ -516,6 +631,127 @@
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        window.googleTranslateElementInit = function() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,fr,es,ar,zh-CN',
+                autoDisplay: false,
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+
+            window.setTimeout(function() {
+                applySavedLanguage();
+            }, 700);
+        };
+
+        function updateLanguageButtons(language) {
+            var labelMap = {
+                'en': 'English',
+                'fr': 'French',
+                'es': 'Spanish',
+                'ar': 'Arabic',
+                'zh-CN': 'Chinese'
+            };
+
+            var label = document.getElementById('current-language-label');
+            if (label) {
+                label.textContent = labelMap[language] || 'English';
+            }
+
+            var options = document.querySelectorAll('[data-language-option]');
+            for (var i = 0; i < options.length; i++) {
+                var isActive = options[i].getAttribute('data-language-option') === language;
+                options[i].classList.toggle('active', isActive);
+            }
+        }
+
+        function setSiteLanguage(language) {
+            localStorage.setItem('site_language', language);
+            updateLanguageButtons(language);
+
+            var combo = document.querySelector('.goog-te-combo');
+            if (!combo) {
+                return;
+            }
+
+            combo.value = language;
+            combo.dispatchEvent(new Event('change'));
+
+            if (language === 'en') {
+                document.cookie = 'googtrans=/en/en;path=/';
+                document.cookie = 'googtrans=/en/en;path=/;domain=' + window.location.hostname;
+                window.location.reload();
+            }
+        }
+
+        function applySavedLanguage() {
+            var saved = localStorage.getItem('site_language') || 'en';
+            updateLanguageButtons(saved);
+
+            var combo = document.querySelector('.goog-te-combo');
+            if (!combo) {
+                window.setTimeout(applySavedLanguage, 500);
+                return;
+            }
+
+            if (saved !== 'en' && combo.value !== saved) {
+                combo.value = saved;
+                combo.dispatchEvent(new Event('change'));
+            }
+        }
+
+        function removeGoogleTranslateChrome() {
+            var selectors = [
+                '.goog-te-banner-frame.skiptranslate',
+                '.goog-te-balloon-frame',
+                '.goog-te-menu-frame',
+                '.VIpgJd-ZVi9od-ORHb',
+                '.VIpgJd-ZVi9od-aZ2wEe',
+                '.VIpgJd-ZVi9od-aZ2wEe-OiiCO',
+                '.VIpgJd-ZVi9od-aZ2wEe-wOHMyf',
+                '.VIpgJd-ZVi9od-l4eHX-hSRGPd',
+                '.VIpgJd-ZVi9od-SmfZ',
+                'iframe[src*="translate.google"]',
+                'iframe[class*="VIpgJd"]'
+            ];
+
+            for (var i = 0; i < selectors.length; i++) {
+                var nodes = document.querySelectorAll(selectors[i]);
+                for (var j = 0; j < nodes.length; j++) {
+                    nodes[j].style.display = 'none';
+                    nodes[j].style.visibility = 'hidden';
+                }
+            }
+
+            var textNodes = document.querySelectorAll('div, span, iframe');
+            for (var k = 0; k < textNodes.length; k++) {
+                var text = (textNodes[k].innerText || '').trim();
+                if (text.indexOf('Rate this translation') !== -1 ||
+                    text.indexOf('Your feedback will be used to help improve Google Translate') !== -1 ||
+                    text.indexOf('Original text') !== -1) {
+                    textNodes[k].style.display = 'none';
+                }
+            }
+
+            document.body.style.top = '0px';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLanguageButtons(localStorage.getItem('site_language') || 'en');
+            removeGoogleTranslateChrome();
+
+            var translateObserver = new MutationObserver(function() {
+                removeGoogleTranslateChrome();
+            });
+
+            translateObserver.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     @include('components.cookie-consent')
     @stack('scripts')

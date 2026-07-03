@@ -36,25 +36,20 @@
             </div>
 
             <div class="flex-grow">
-                <div class="mb-7" data-aos="fade-up">
+                <div class="mb-7 -mt-3 md:-mt-5" data-aos="fade-up">
                     <form action="{{ route('programs.index') }}" method="GET" class="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-3 sm:p-4 shadow-sm">
                         @if(request()->filled('degree'))
                         <input type="hidden" name="degree" value="{{ request('degree') }}">
                         @endif
 
                         <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
-                            <div class="flex-1 relative">
-                                <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-gray-400">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.3-4.3m1.8-5.2a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
+                            <div class="flex-1">
                                 <input
                                     type="text"
                                     name="q"
                                     value="{{ request('q') }}"
                                     placeholder="Search programs or universities..."
-                                    class="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-[#0D47A1] focus:border-[#0D47A1] text-gray-900 dark:text-white placeholder:text-gray-400">
+                                    class="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#0b1120] border border-gray-200 dark:border-white/10 focus:ring-2 focus:ring-[#0D47A1] focus:border-[#0D47A1] text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 caret-[#0D47A1] dark:caret-[#1FA463]">
                             </div>
 
                             <div class="flex gap-3">

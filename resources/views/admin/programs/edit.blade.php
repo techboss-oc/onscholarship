@@ -39,6 +39,11 @@
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Tuition Fee ($/Year) <span class="text-red-500">*</span></label>
                 <input type="number" step="0.01" name="tuition_fee" required value="{{ old('tuition_fee', $program->tuition_fee) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
             </div>
+            <div>
+                <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Service Charge ($) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" name="service_charge_usd" required value="{{ old('service_charge_usd', $program->service_charge_usd) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Charged after the application is accepted and ready for admission processing.</p>
+            </div>
             <div class="col-span-2">
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Description / Highlights</label>
                 <textarea name="description" rows="4" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] border">{{ old('description', $program->description) }}</textarea>

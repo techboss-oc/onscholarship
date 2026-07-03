@@ -53,6 +53,18 @@
 </div>
 @endif
 
+@if($pendingServiceChargeApplications->count())
+<div class="bg-gradient-to-r from-[#0f2441] to-[#1f4e8c] text-white p-5 rounded-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+    <div>
+        <h3 class="font-bold text-lg brand-font">Service Charge Payment Needed</h3>
+        <p class="text-sm opacity-90">Your accepted application for {{ $pendingServiceChargeApplications->first()->program->name ?? 'your program' }} is waiting for the admission service charge.</p>
+    </div>
+    <a href="{{ route('student.applications.service_charge', $pendingServiceChargeApplications->first()->id) }}" class="shrink-0 px-6 py-2.5 bg-white text-[#0f2441] font-bold rounded-xl hover:bg-gray-50 transition">
+        Pay Now
+    </a>
+</div>
+@endif
+
 <!-- Recent Applications -->
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden mb-8">
     <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700">
@@ -64,12 +76,20 @@
         <div>
             <p class="font-semibold text-gray-900 dark:text-white text-sm">{{ $app->program->name ?? 'Program N/A' }}</p>
             <p class="text-xs text-gray-400">{{ $app->program->university->name ?? '' }} • {{ $app->intake_semester }} {{ $app->intake_year }}</p>
+            <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Application Fee: {{ $app->application_fee_currency ?: 'USD' }} {{ number_format((float) $app->application_fee_amount, 2) }} • Service Charge: {{ $app->service_charge_currency ?: 'USD' }} {{ number_format((float) $app->service_charge_amount, 2) }}</p>
         </div>
         @php
-            $colors = ['draft'=>'bg-gray-100 text-gray-600','submitted'=>'bg-blue-100 text-blue-700','accepted'=>'bg-green-100 text-green-700','rejected'=>'bg-red-100 text-red-700'];
+            $colors = ['draft'=>'bg-gray-100 text-gray-600','submitted'=>'bg-yellow-100 text-yellow-700','under_review'=>'bg-blue-100 text-blue-700','documents_required'=>'bg-orange-100 text-orange-700','accepted'=>'bg-green-100 text-green-700','offer_letter_issued'=>'bg-emerald-100 text-emerald-700','visa_processing'=>'bg-indigo-100 text-indigo-700','completed'=>'bg-teal-100 text-teal-700','rejected'=>'bg-red-100 text-red-700'];
             $color = $colors[$app->status] ?? 'bg-gray-100 text-gray-600';
         @endphp
-        <span class="px-2.5 py-1 text-xs font-bold rounded-md {{ $color }} uppercase">{{ $app->status }}</span>
+        <div class="text-right">
+            <span class="px-2.5 py-1 text-xs font-bold rounded-md {{ $color }} uppercase">{{ str_replace('_', ' ', $app->status) }}</span>
+            @if(in_array($app->status, ['accepted', 'offer_letter_issued', 'visa_processing'], true) && !in_array($app->service_charge_status, ['paid', 'waived'], true))
+                <div class="mt-2">
+                    <a href="{{ route('student.applications.service_charge', $app->id) }}" class="inline-flex px-3 py-1.5 bg-[#f15a24] text-white rounded-lg text-[11px] font-bold hover:bg-[#d94a1c] transition">Pay Service Charge</a>
+                </div>
+            @endif
+        </div>
     </div>
     @empty
     <div class="p-8 text-center text-gray-400 text-sm">

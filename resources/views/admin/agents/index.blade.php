@@ -22,15 +22,20 @@
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($agents as $agentProfile)
+                @php
+                    $agentUser = $agentProfile->user;
+                    $agentName = $agentUser?->name ?? 'Unknown Agent';
+                    $agentEmail = $agentUser?->email ?? 'No email available';
+                @endphp
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
                     <td class="p-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-[#0f2441] text-white flex items-center justify-center font-bold shadow-sm shrink-0">
-                                {{ substr($agentProfile->user->name, 0, 1) }}
+                                {{ strtoupper(substr($agentName, 0, 1)) }}
                             </div>
                             <div>
-                                <p class="font-bold text-gray-900 dark:text-white">{{ $agentProfile->user->name }}</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $agentProfile->user->email }}</p>
+                                <p class="font-bold text-gray-900 dark:text-white">{{ $agentName }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $agentEmail }}</p>
                                 <p class="text-xs text-gray-400">{{ $agentProfile->phone_number }}</p>
                             </div>
                         </div>

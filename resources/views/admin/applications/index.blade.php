@@ -6,11 +6,11 @@
         <h1 class="text-2xl font-black text-[#0f2441] dark:text-white brand-font">Application Management</h1>
         <p class="text-sm text-gray-500 mt-1">Review and update student university applications.</p>
     </div>
-    
-    <div class="flex gap-2">
+
+    <div class="flex gap-2 flex-wrap">
         <a href="{{ route('admin.applications.index') }}" class="px-3 py-1.5 {{ !request('status') ? 'bg-[#f15a24] text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">All</a>
-        <a href="{{ route('admin.applications.index', ['status' => 'pending']) }}" class="px-3 py-1.5 {{ request('status') == 'pending' ? 'bg-yellow-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">Pending</a>
-        <a href="{{ route('admin.applications.index', ['status' => 'processing']) }}" class="px-3 py-1.5 {{ request('status') == 'processing' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">Processing</a>
+        <a href="{{ route('admin.applications.index', ['status' => 'submitted']) }}" class="px-3 py-1.5 {{ request('status') == 'submitted' ? 'bg-yellow-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">Submitted</a>
+        <a href="{{ route('admin.applications.index', ['status' => 'under_review']) }}" class="px-3 py-1.5 {{ request('status') == 'under_review' ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">Under Review</a>
         <a href="{{ route('admin.applications.index', ['status' => 'accepted']) }}" class="px-3 py-1.5 {{ request('status') == 'accepted' ? 'bg-green-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200' }} rounded-lg text-sm font-medium transition">Accepted</a>
     </div>
 </div>
@@ -24,6 +24,8 @@
                     <th class="p-4">Student</th>
                     <th class="p-4">Program & University</th>
                     <th class="p-4 flex justify-center">Status</th>
+                    <th class="p-4">Fee</th>
+                    <th class="p-4">Service Charge</th>
                     <th class="p-4">Date</th>
                     <th class="p-4 text-right">Actions</th>
                 </tr>
@@ -41,15 +43,38 @@
                         <p class="text-xs text-gray-500 max-w-[250px] truncate">{{ $app->program->university->name }}</p>
                     </td>
                     <td class="p-4 flex justify-center">
-                        @if($app->status === 'pending')
-                            <span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800 text-xs font-bold rounded-full uppercase tracking-widest">Pending</span>
-                        @elseif($app->status === 'processing')
-                            <span class="px-2.5 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800 text-xs font-bold rounded-full uppercase tracking-widest">Processing</span>
-                        @elseif($app->status === 'accepted' || $app->status === 'enrolled')
-                            <span class="px-2.5 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800 text-xs font-bold rounded-full uppercase tracking-widest">{{ $app->status }}</span>
+                        @if($app->status === 'submitted')
+                        <span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800 text-xs font-bold rounded-full uppercase tracking-widest">Submitted</span>
+                        @elseif($app->status === 'under_review')
+                        <span class="px-2.5 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800 text-xs font-bold rounded-full uppercase tracking-widest">Under Review</span>
+                        @elseif(in_array($app->status, ['accepted', 'completed', 'offer_letter_issued', 'visa_processing'], true))
+                        <span class="px-2.5 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800 text-xs font-bold rounded-full uppercase tracking-widest">{{ str_replace('_', ' ', $app->status) }}</span>
+                        @elseif($app->status === 'documents_required')
+                        <span class="px-2.5 py-1 bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800 text-xs font-bold rounded-full uppercase tracking-widest">Documents Required</span>
                         @else
-                            <span class="px-2.5 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800 text-xs font-bold rounded-full uppercase tracking-widest">Rejected</span>
+                        <span class="px-2.5 py-1 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800 text-xs font-bold rounded-full uppercase tracking-widest">{{ str_replace('_', ' ', $app->status) }}</span>
                         @endif
+                    </td>
+                    <td class="p-4">
+                        @if($app->application_fee_status === 'paid')
+                        <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold rounded-full uppercase tracking-widest">Paid</span>
+                        @elseif($app->application_fee_status === 'waived')
+                        <span class="px-2.5 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold rounded-full uppercase tracking-widest">Waived</span>
+                        @else
+                        <span class="px-2.5 py-1 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-bold rounded-full uppercase tracking-widest">Unpaid</span>
+                        @endif
+                    </td>
+                    <td class="p-4">
+                        <div class="flex flex-col gap-2">
+                            @if($app->service_charge_status === 'paid')
+                            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs font-bold rounded-full uppercase tracking-widest">Paid</span>
+                            @elseif($app->service_charge_status === 'waived')
+                            <span class="px-2.5 py-1 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-xs font-bold rounded-full uppercase tracking-widest">Waived</span>
+                            @else
+                            <span class="px-2.5 py-1 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 text-xs font-bold rounded-full uppercase tracking-widest">Unpaid</span>
+                            @endif
+                            <span class="text-[11px] text-gray-500 dark:text-gray-400">{{ $app->service_charge_currency ?: 'USD' }} {{ number_format((float) $app->service_charge_amount, 2) }}</span>
+                        </div>
                     </td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">{{ $app->created_at->format('M d, Y') }}</td>
                     <td class="p-4 text-right">
@@ -59,7 +84,9 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="p-8 text-center text-gray-400">No applications found.</td></tr>
+                <tr>
+                    <td colspan="8" class="p-8 text-center text-gray-400">No applications found.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

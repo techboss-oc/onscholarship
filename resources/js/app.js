@@ -7,8 +7,8 @@ window.Alpine = Alpine;
 Alpine.store('theme', {
     dark: false,
     init() {
-        this.dark = localStorage.theme === 'dark' ||
-                    (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme:dark)').matches);
+        this.dark = true;
+        localStorage.theme = 'dark';
         this._apply();
     },
     toggle() {

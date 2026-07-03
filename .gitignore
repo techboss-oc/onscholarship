@@ -1,3 +1,6 @@
 .env
 node_modules/
 extra.zip
+/storage/framework/views/*.php
+/storage/framework/cache/*.php
+/storage/logs/*.log

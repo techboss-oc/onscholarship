@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\StudentProfile;
 
 class Application extends Model
 {
@@ -20,6 +21,8 @@ class Application extends Model
         'scholarship_id',
         'agent_id',
         'status',
+        'cover_letter',
+        'admin_notes',
         'remarks',
         'offer_letter',
         'rejection_reason',
@@ -28,11 +31,29 @@ class Application extends Model
         'reviewed_by',
         'intake_year',
         'intake_semester',
+        'application_fee_amount',
+        'application_fee_currency',
+        'application_fee_status',
+        'application_fee_paid_at',
+        'application_fee_reference',
+        'application_fee_method',
+        'application_fee_notes',
+        'service_charge_amount',
+        'service_charge_currency',
+        'service_charge_status',
+        'service_charge_paid_at',
+        'service_charge_reference',
+        'service_charge_method',
+        'service_charge_notes',
     ];
 
     protected $casts = [
         'submitted_at' => 'datetime',
         'reviewed_at' => 'datetime',
+        'application_fee_paid_at' => 'datetime',
+        'application_fee_amount' => 'decimal:2',
+        'service_charge_paid_at' => 'datetime',
+        'service_charge_amount' => 'decimal:2',
     ];
 
     protected static function boot()
@@ -50,6 +71,11 @@ class Application extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(StudentProfile::class, 'user_id', 'user_id');
     }
 
     public function university(): BelongsTo
@@ -85,5 +111,15 @@ class Application extends Model
     public function statusHistory(): HasMany
     {
         return $this->hasMany(ApplicationStatusHistory::class);
+    }
+
+    public function getIsFeePaidAttribute(): bool
+    {
+        return in_array($this->application_fee_status, ['paid', 'waived'], true);
+    }
+
+    public function getIsServiceChargePaidAttribute(): bool
+    {
+        return in_array($this->service_charge_status, ['paid', 'waived'], true);
     }
 }

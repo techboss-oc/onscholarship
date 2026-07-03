@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactRequest;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -30,12 +31,18 @@ class PageController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        // Store in ContactRequest model
-        \App\Models\ContactRequest::create($request->only(['name', 'email', 'subject', 'message']));
+        ContactRequest::create($request->only(['name', 'email', 'subject', 'message']));
 
         // TODO: Add email notification later
 
-        return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+        $redirectTo = $request->headers->get('referer') ?: route('contact');
+
+        return redirect()->to($redirectTo)
+            ->with('success', 'Thank you for your message! We will get back to you soon.')
+            ->with('contact_success_popup', [
+                'title' => 'Message Sent Successfully',
+                'message' => 'Thank you for reaching out to Onscholarship. Our team has received your message and will respond as soon as possible.',
+            ]);
     }
 
     public function universities()

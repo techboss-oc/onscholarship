@@ -28,10 +28,19 @@
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
                     <td class="p-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-[#0f2441] text-white font-black flex items-center justify-center text-sm shadow-sm">
-                                {{ substr($uni->name, 0, 1) }}
+                            <div class="w-12 h-12 overflow-hidden rounded-xl bg-[#0f2441] shadow-sm shrink-0 flex items-center justify-center">
+                                @if($uni->cover_image)
+                                    <img src="{{ Storage::url($uni->cover_image) }}" alt="{{ $uni->name }}" class="w-full h-full object-cover">
+                                @elseif($uni->logo)
+                                    <img src="{{ Storage::url($uni->logo) }}" alt="{{ $uni->name }}" class="w-full h-full object-contain bg-white p-1.5">
+                                @else
+                                    <span class="text-white font-black text-sm">{{ strtoupper(substr($uni->name, 0, 1)) }}</span>
+                                @endif
                             </div>
-                            <p class="font-semibold text-gray-900 dark:text-white text-sm">{{ $uni->name }}</p>
+                            <div>
+                                <p class="font-semibold text-gray-900 dark:text-white text-sm">{{ $uni->name }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ ucfirst($uni->type) }} university</p>
+                            </div>
                         </div>
                     </td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">{{ $uni->city }}, {{ $uni->province }}</td>

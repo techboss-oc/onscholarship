@@ -51,15 +51,17 @@
         </div>
     </div>
 
-    <!-- Quick Link: Applications -->
-    <a href="{{ route('admin.applications.index') }}" class="stat-card cursor-pointer group">
+    <!-- New Contact Messages -->
+    <a href="{{ route('admin.contact_requests.index') }}" class="stat-card cursor-pointer group">
         <div>
-            <p class="stat-label">Applications</p>
-            <p class="stat-value group-hover:text-[#f15a24] transition-colors">→</p>
-            <p class="text-xs mt-2" style="color: var(--text-muted);">Review & manage</p>
+            <p class="stat-label">New Messages</p>
+            <p class="stat-value {{ $newContactMessages > 0 ? 'text-[#f15a24]' : '' }}">{{ number_format($newContactMessages) }}</p>
+            <p class="text-xs mt-2" style="color: var(--text-muted);">
+                {{ $newContactMessages > 0 ? 'Unread contact enquiries' : 'No new contact messages' }}
+            </p>
         </div>
         <div class="stat-icon" style="background: rgba(139,92,246,0.12);">
-            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
         </div>
     </a>
 </div>
@@ -129,20 +131,55 @@
         </div>
     </div>
 
-    <!-- Activity Log Placeholder -->
+    <!-- Recent Contact Messages -->
     <div class="admin-card p-6 lg:col-span-2">
         <div class="flex items-center justify-between mb-5">
-            <h2 class="brand-font font-bold text-base" style="color: var(--text-primary);">Recent Activity</h2>
-            <span class="badge badge-pending">Coming Soon</span>
+            <div>
+                <h2 class="brand-font font-bold text-base" style="color: var(--text-primary);">Recent Contact Messages</h2>
+                <p class="text-xs mt-1" style="color: var(--text-muted);">Latest enquiries submitted from the website contact page.</p>
+            </div>
+            <span class="badge {{ $newContactMessages > 0 ? 'badge-pending' : '' }}" style="{{ $newContactMessages === 0 ? 'background: rgba(16,185,129,0.12); color: #10b981;' : '' }}">
+                {{ $newContactMessages > 0 ? $newContactMessages . ' New' : 'Up to Date' }}
+            </span>
         </div>
 
-        <div class="flex flex-col items-center justify-center py-16 text-center">
-            <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background: var(--border);">
-                <svg class="w-8 h-8" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        @if($recentContactRequests->isNotEmpty())
+            <div class="space-y-3">
+                @foreach($recentContactRequests as $contactRequest)
+                    <a href="{{ route('admin.contact_requests.show', $contactRequest->id) }}" class="block rounded-2xl border p-4 transition hover:bg-gray-50 dark:hover:bg-white/5" style="border-color: var(--border);">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <p class="text-sm font-bold" style="color: var(--text-primary);">{{ $contactRequest->name }}</p>
+                                    <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide {{ $contactRequest->status === 'new' ? 'bg-[#f15a24]/10 text-[#f15a24]' : 'bg-emerald-500/10 text-emerald-500' }}">
+                                        {{ $contactRequest->status }}
+                                    </span>
+                                </div>
+                                <p class="text-xs mt-1 break-all" style="color: var(--text-muted);">{{ $contactRequest->email }}</p>
+                                <p class="text-sm mt-3 font-semibold" style="color: var(--text-secondary);">{{ $contactRequest->subject }}</p>
+                                <p class="text-sm mt-2 leading-6" style="color: var(--text-muted);">
+                                    {{ \Illuminate\Support\Str::limit($contactRequest->message, 140) }}
+                                </p>
+                            </div>
+
+                            <div class="shrink-0 text-left sm:text-right">
+                                <p class="text-xs font-semibold uppercase tracking-wide" style="color: var(--text-muted);">Received</p>
+                                <p class="text-sm mt-1" style="color: var(--text-primary);">{{ $contactRequest->created_at->format('M j, Y') }}</p>
+                                <p class="text-xs mt-1" style="color: var(--text-muted);">{{ $contactRequest->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
             </div>
-            <p class="text-sm font-semibold" style="color: var(--text-secondary);">No recent activity</p>
-            <p class="text-xs mt-1" style="color: var(--text-muted);">Activity logging will be available in the next update.</p>
-        </div>
+        @else
+            <div class="flex flex-col items-center justify-center py-16 text-center">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style="background: var(--border);">
+                    <svg class="w-8 h-8" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <p class="text-sm font-semibold" style="color: var(--text-secondary);">No contact messages yet</p>
+                <p class="text-xs mt-1" style="color: var(--text-muted);">New enquiries from the contact page will appear here automatically.</p>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

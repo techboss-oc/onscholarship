@@ -24,6 +24,12 @@ class AgentStudentController extends Controller
 
         // Analytics (Askuni Style)
         $apps = $user->agentApplications;
+        $pendingServiceChargeApplications = $user->agentApplications()
+            ->with(['student.user', 'program.university'])
+            ->whereIn('status', ['accepted', 'offer_letter_issued', 'visa_processing'])
+            ->whereNotIn('service_charge_status', ['paid', 'waived'])
+            ->latest()
+            ->get();
         $stats = [
             'total_apps' => $apps->count(),
             'offers_sent' => $apps->where('status', 'offer_letter_issued')->count(),
@@ -54,7 +60,8 @@ class AgentStudentController extends Controller
             'stats', 
             'commissions', 
             'announcements',
-            'chartData'
+            'chartData',
+            'pendingServiceChargeApplications'
         ));
     }
 

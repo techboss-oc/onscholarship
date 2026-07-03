@@ -12,7 +12,12 @@ class AgentController extends Controller
 {
     public function index()
     {
-        $agents = AgentProfile::with('user')->paginate(15);
+        $agents = AgentProfile::query()
+            ->with('user')
+            ->whereHas('user')
+            ->latest()
+            ->paginate(15);
+
         return view('admin.agents.index', compact('agents'));
     }
 
@@ -34,7 +39,7 @@ class AgentController extends Controller
                 report($exception);
             }
         }
-        
+
         return redirect()->back()->with('success', 'Agent approved successfully.');
     }
 
@@ -42,7 +47,7 @@ class AgentController extends Controller
     {
         $agent = AgentProfile::findOrFail($id);
         $agent->update(['approval_status' => 'suspended']);
-        
+
         return redirect()->back()->with('success', 'Agent suspended successfully.');
     }
 }

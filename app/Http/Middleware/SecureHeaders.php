@@ -22,7 +22,7 @@ class SecureHeaders
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-        $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*; font-src 'self' https://fonts.bunny.net; connect-src 'self'; frame-ancestors 'self'");
+        $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdnjs.cloudflare.com https://translate.google.com https://translate.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*; font-src 'self' https://fonts.bunny.net; connect-src 'self' https://translate.google.com https://translate.googleapis.com; frame-src 'self' https://translate.google.com https://translate.googleapis.com https://*.google.com; frame-ancestors 'self'");
 
         return $response;
     }

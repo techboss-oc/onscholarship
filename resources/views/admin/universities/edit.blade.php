@@ -29,6 +29,20 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Logo (leave blank to keep current)</label>
                 <input type="file" name="logo" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#f15a24] file:text-white">
+                @if($university->logo)
+                    <div class="mt-3 w-20 h-20 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white flex items-center justify-center p-2">
+                        <img src="{{ Storage::url($university->logo) }}" alt="{{ $university->name }} logo" class="max-h-full w-auto object-contain">
+                    </div>
+                @endif
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cover Image (leave blank to keep current)</label>
+                <input type="file" name="cover_image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#0f2441] file:text-white">
+                @if($university->cover_image)
+                    <div class="mt-3 h-24 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
+                        <img src="{{ Storage::url($university->cover_image) }}" alt="{{ $university->name }} cover image" class="w-full h-full object-cover">
+                    </div>
+                @endif
             </div>
             <div class="flex items-center gap-2">
                 <input type="checkbox" name="is_active" id="is_active" value="1" {{ $university->is_active ? 'checked' : '' }} class="rounded border-gray-300 text-[#f15a24] focus:ring-[#f15a24]">

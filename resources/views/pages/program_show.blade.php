@@ -20,11 +20,15 @@
                     </div>
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Tuition Fee</p>
-                        <p class="text-lg font-bold text-gray-900 dark:text-white">${{ number_format($program->tuition_fee, 2) }} / Yr</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-white">${{ number_format((float) $program->tuition_fee, 2) }} / Yr</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Language</p>
                         <p class="text-lg font-bold text-gray-900 dark:text-white">English Taught</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Service Charge</p>
+                        <p class="text-lg font-bold text-[#f15a24]">USD {{ number_format((float) $program->service_charge_usd, 2) }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Status</p>

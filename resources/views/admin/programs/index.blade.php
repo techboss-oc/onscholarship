@@ -20,6 +20,7 @@
                     <th class="p-4">University</th>
                     <th class="p-4">Level & Duration</th>
                     <th class="p-4">Tuition</th>
+                    <th class="p-4">Service Charge</th>
                     <th class="p-4">Status</th>
                     <th class="p-4 text-right">Actions</th>
                 </tr>
@@ -30,7 +31,8 @@
                     <td class="p-4 font-semibold text-gray-900 dark:text-white text-sm max-w-[200px] truncate" title="{{ $p->name }}">{{ $p->name }}</td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400 max-w-[200px] truncate" title="{{ $p->university->name }}">{{ $p->university->name }}</td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">{{ ucfirst($p->degree_level) }} • {{ $p->duration_years }} yrs</td>
-                    <td class="p-4 text-sm font-medium text-gray-900 dark:text-gray-300">${{ number_format($p->tuition_fee, 2) }}</td>
+                    <td class="p-4 text-sm font-medium text-gray-900 dark:text-gray-300">${{ number_format((float) $p->tuition_fee, 2) }}</td>
+                    <td class="p-4 text-sm font-medium text-[#f15a24]">${{ number_format((float) $p->service_charge_usd, 2) }}</td>
                     <td class="p-4">
                         @if($p->is_active)
                             <span class="px-2.5 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-md">Active</span>
@@ -49,7 +51,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="p-8 text-center text-gray-400">No programs found. <a href="{{ route('admin.programs.create') }}" class="text-[#f15a24] font-bold">Add one now →</a></td></tr>
+                <tr><td colspan="7" class="p-8 text-center text-gray-400">No programs found. <a href="{{ route('admin.programs.create') }}" class="text-[#f15a24] font-bold">Add one now →</a></td></tr>
                 @endforelse
             </tbody>
         </table>

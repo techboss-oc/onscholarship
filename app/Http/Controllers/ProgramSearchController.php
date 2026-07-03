@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\Setting;
 use App\Models\University;
 use Illuminate\Http\Request;
 
@@ -53,7 +54,11 @@ class ProgramSearchController extends Controller
         $viewPrefix = auth()->user()->hasRole('agent') ? 'agent.' : 'student.';
         
         $layoutName = auth()->user()->hasRole('agent') ? 'layouts.agent' : 'layouts.student';
+        $applicationFee = [
+            'amount' => (float) Setting::get('application_fee_amount', 120),
+            'currency' => strtoupper((string) Setting::get('application_fee_currency', 'USD')),
+        ];
 
-        return view('shared.programs-search', compact('programs', 'degreeTypes', 'languages', 'layoutName'));
+        return view('shared.programs-search', compact('programs', 'degreeTypes', 'languages', 'layoutName', 'applicationFee'));
     }
 }

@@ -64,6 +64,19 @@
         </div>
     </div>
 
+    @if($pendingServiceChargeApplications->count())
+    <div class="mb-8 rounded-2xl border border-[#f15a24]/30 bg-[#f15a24]/12 p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-[#f8a382] font-bold">Service Charge Prompt</p>
+            <h3 class="text-xl font-black mt-2">Accepted Application Waiting For Payment</h3>
+            <p class="text-sm text-white/75 mt-1">The application for {{ $pendingServiceChargeApplications->first()->student?->user?->name ?? 'your student' }} is accepted and now needs the program service charge.</p>
+        </div>
+        <a href="{{ route('agent.applications.service_charge', $pendingServiceChargeApplications->first()->id) }}" class="shrink-0 px-6 py-3 bg-white text-[#0f2441] font-bold rounded-xl hover:bg-slate-100 transition">
+            Pay Service Charge
+        </a>
+    </div>
+    @endif
+
     <!-- Analytics Cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div class="bg-white/5 border border-white/5 rounded-xl p-4 transition hover:bg-white/10">

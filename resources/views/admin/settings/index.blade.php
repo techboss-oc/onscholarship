@@ -58,6 +58,73 @@
             </div>
         </div>
 
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-100 dark:border-gray-700">Payment Gateway Settings</h3>
+        <div class="space-y-6 mb-8">
+            <div class="bg-emerald-50/50 dark:bg-emerald-900/10 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-800/50">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">Paystack</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Configure Paystack for service charge and application fee collections.</p>
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <input type="hidden" name="paystack_enabled" value="0">
+                        <input type="checkbox" name="paystack_enabled" value="1" {{ ($settings['paystack_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="rounded border-gray-300 text-[#f15a24] focus:ring-[#f15a24]">
+                        Enable
+                    </label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Public Key</label>
+                        <input type="text" name="paystack_public_key" value="{{ $settings['paystack_public_key'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Secret Key</label>
+                        <input type="password" name="paystack_secret_key" value="{{ $settings['paystack_secret_key'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Currency</label>
+                        <input type="text" name="paystack_currency" value="{{ $settings['paystack_currency'] ?? 'USD' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Webhook Secret</label>
+                        <input type="password" name="paystack_webhook_secret" value="{{ $settings['paystack_webhook_secret'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-50/50 dark:bg-blue-900/10 p-5 rounded-2xl border border-blue-100 dark:border-blue-800/50">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">Flutterwave</h4>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Configure Flutterwave as an additional payment processing option.</p>
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <input type="hidden" name="flutterwave_enabled" value="0">
+                        <input type="checkbox" name="flutterwave_enabled" value="1" {{ ($settings['flutterwave_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="rounded border-gray-300 text-[#f15a24] focus:ring-[#f15a24]">
+                        Enable
+                    </label>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Public Key</label>
+                        <input type="text" name="flutterwave_public_key" value="{{ $settings['flutterwave_public_key'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Secret Key</label>
+                        <input type="password" name="flutterwave_secret_key" value="{{ $settings['flutterwave_secret_key'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Encryption Key</label>
+                        <input type="password" name="flutterwave_encryption_key" value="{{ $settings['flutterwave_encryption_key'] ?? '' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Currency</label>
+                        <input type="text" name="flutterwave_currency" value="{{ $settings['flutterwave_currency'] ?? 'USD' }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
             <button type="submit" class="px-8 py-2.5 bg-[#f15a24] text-white font-bold rounded-xl hover:bg-[#d94a1c] transition shadow-md">Save Settings</button>
         </div>

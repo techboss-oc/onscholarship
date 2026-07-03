@@ -18,9 +18,21 @@
             <!-- Reused Card Layout from Homepage -->
             <div class="group bg-white dark:bg-gray-800 rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 flex flex-col">
                 <div class="relative h-48 overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                    <div class="w-full h-full bg-gradient-to-br from-[#0f2441] to-blue-900 flex items-center justify-center opacity-80 group-hover:scale-110 transition duration-700">
-                        <span class="text-white text-5xl font-extrabold opacity-30">{{ substr($university->name, 0, 1) }}</span>
-                    </div>
+                    @if($university->cover_image)
+                        <img
+                            src="{{ Storage::url($university->cover_image) }}"
+                            alt="{{ $university->name }}"
+                            class="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                        >
+                    @elseif($university->logo)
+                        <div class="w-full h-full bg-gradient-to-br from-[#0f2441] to-blue-900 flex items-center justify-center group-hover:scale-110 transition duration-700">
+                            <img src="{{ Storage::url($university->logo) }}" alt="{{ $university->name }}" class="max-h-24 w-auto object-contain drop-shadow-xl">
+                        </div>
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-[#0f2441] to-blue-900 flex items-center justify-center opacity-80 group-hover:scale-110 transition duration-700">
+                            <span class="text-white text-5xl font-extrabold opacity-30">{{ substr($university->name, 0, 1) }}</span>
+                        </div>
+                    @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
                     <div class="absolute bottom-4 left-4 right-4 flex items-center gap-4">
                         <span class="px-3 py-1 bg-[#f15a24] text-white text-xs font-bold rounded-full shadow">{{ $university->city ?? 'China' }}</span>

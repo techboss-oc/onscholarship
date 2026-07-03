@@ -27,6 +27,8 @@ class UniversityController extends Controller
             'city'     => 'required|string|max:100',
             'province' => 'required|string|max:100',
             'type'     => 'required|in:public,private',
+            'logo' => 'nullable|image|max:5120',
+            'cover_image' => 'nullable|image|max:5120',
         ]);
 
         $data = $request->except('logo', 'cover_image');
@@ -52,12 +54,25 @@ class UniversityController extends Controller
     public function update(Request $request, $id)
     {
         $university = University::findOrFail($id);
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'city'     => 'required|string|max:100',
+            'province' => 'required|string|max:100',
+            'type'     => 'required|in:public,private',
+            'logo' => 'nullable|image|max:5120',
+            'cover_image' => 'nullable|image|max:5120',
+        ]);
+
         $data = $request->except('logo', 'cover_image', '_method');
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('logo')) {
             if ($university->logo) Storage::disk('public')->delete($university->logo);
             $data['logo'] = $request->file('logo')->store('universities/logos', 'public');
+        }
+        if ($request->hasFile('cover_image')) {
+            if ($university->cover_image) Storage::disk('public')->delete($university->cover_image);
+            $data['cover_image'] = $request->file('cover_image')->store('universities/covers', 'public');
         }
         $university->update($data);
         return redirect()->route('admin.universities.index')->with('success', 'University updated successfully.');

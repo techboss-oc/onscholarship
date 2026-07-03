@@ -29,6 +29,7 @@ class ProgramController extends Controller
             'degree_level'   => 'required|in:bachelor,master,phd,non-degree',
             'duration_years' => 'required|numeric|min:0.5|max:10',
             'tuition_fee'    => 'required|numeric|min:0',
+            'service_charge_usd' => 'required|numeric|min:0',
         ]);
 
         Program::create([
@@ -36,7 +37,8 @@ class ProgramController extends Controller
             'name'           => $request->name,
             'degree_level'   => $request->degree_level,
             'duration_years' => $request->duration_years,
-            'tuition_fee'    => $request->tuition_fee,
+            'tuition_fee_usd' => $request->tuition_fee,
+            'service_charge_usd' => $request->service_charge_usd,
             'description'    => $request->description,
             'is_active'      => $request->boolean('is_active', true),
         ]);
@@ -61,6 +63,7 @@ class ProgramController extends Controller
             'degree_level'   => 'required|in:bachelor,master,phd,non-degree',
             'duration_years' => 'required|numeric|min:0.5|max:10',
             'tuition_fee'    => 'required|numeric|min:0',
+            'service_charge_usd' => 'required|numeric|min:0',
         ]);
 
         $program->update([
@@ -68,7 +71,8 @@ class ProgramController extends Controller
             'name'           => $request->name,
             'degree_level'   => $request->degree_level,
             'duration_years' => $request->duration_years,
-            'tuition_fee'    => $request->tuition_fee,
+            'tuition_fee_usd' => $request->tuition_fee,
+            'service_charge_usd' => $request->service_charge_usd,
             'description'    => $request->description,
             'is_active'      => $request->boolean('is_active'),
         ]);

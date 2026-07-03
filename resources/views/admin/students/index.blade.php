@@ -22,17 +22,23 @@
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                 @forelse($students as $s)
+                @php
+                    $studentUser = $s->user;
+                    $studentName = $studentUser?->name ?? ($s->full_name ?: 'Unknown Student');
+                    $studentEmail = $studentUser?->email ?? 'No email available';
+                    $agentName = $s->agent?->company_name ?? $s->agent?->user?->name;
+                @endphp
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
                     <td class="p-4 text-sm font-bold text-gray-900 dark:text-white">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
-                                {{ substr($s->user->name, 0, 1) }}
+                                {{ strtoupper(substr($studentName, 0, 1)) }}
                             </div>
-                            {{ $s->user->name }}
+                            {{ $studentName }}
                         </div>
                     </td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">
-                        {{ $s->user->email }}<br>
+                        {{ $studentEmail }}<br>
                         <span class="text-xs text-gray-500">{{ $s->phone ?? 'No Phone' }}</span>
                     </td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">
@@ -40,7 +46,7 @@
                     </td>
                     <td class="p-4 text-sm text-gray-600 dark:text-gray-400">
                         @if($s->agent)
-                            <span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-md">{{ $s->agent->company_name ?? $s->agent->user->name }}</span>
+                            <span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-md">{{ $agentName ?? 'Assigned Agent' }}</span>
                         @else
                             <span class="text-gray-400 italic">Direct</span>
                         @endif

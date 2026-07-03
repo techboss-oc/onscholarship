@@ -22,6 +22,7 @@ class Program extends Model
         'duration_years',
         'tuition_fee_usd',
         'tuition_fee_cny',
+        'service_charge_usd',
         'language',
         'intake_months',
         'requirements',
@@ -33,9 +34,20 @@ class Program extends Model
     protected $casts = [
         'tuition_fee_usd' => 'decimal:2',
         'tuition_fee_cny' => 'decimal:2',
+        'service_charge_usd' => 'decimal:2',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
     ];
+
+    public function getTuitionFeeAttribute()
+    {
+        return $this->tuition_fee_usd;
+    }
+
+    public function setTuitionFeeAttribute($value): void
+    {
+        $this->attributes['tuition_fee_usd'] = $value;
+    }
 
     public function university(): BelongsTo
     {
