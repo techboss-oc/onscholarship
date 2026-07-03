@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Program;
 use App\Models\University;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProgramController extends Controller
 {
@@ -23,25 +24,9 @@ class ProgramController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'university_id'  => 'required|exists:universities,id',
-            'name'           => 'required|string|max:255',
-            'degree_level'   => 'required|in:bachelor,master,phd,non-degree',
-            'duration_years' => 'required|numeric|min:0.5|max:10',
-            'tuition_fee'    => 'required|numeric|min:0',
-            'service_charge_usd' => 'required|numeric|min:0',
-        ]);
+        $validated = $request->validate($this->rules());
 
-        Program::create([
-            'university_id'  => $request->university_id,
-            'name'           => $request->name,
-            'degree_level'   => $request->degree_level,
-            'duration_years' => $request->duration_years,
-            'tuition_fee_usd' => $request->tuition_fee,
-            'service_charge_usd' => $request->service_charge_usd,
-            'description'    => $request->description,
-            'is_active'      => $request->boolean('is_active', true),
-        ]);
+        Program::create($this->programPayload($validated, $request));
 
         return redirect()->route('admin.programs.index')->with('success', 'Program created successfully.');
     }
@@ -57,25 +42,9 @@ class ProgramController extends Controller
     {
         $program = Program::findOrFail($id);
 
-        $request->validate([
-            'university_id'  => 'required|exists:universities,id',
-            'name'           => 'required|string|max:255',
-            'degree_level'   => 'required|in:bachelor,master,phd,non-degree',
-            'duration_years' => 'required|numeric|min:0.5|max:10',
-            'tuition_fee'    => 'required|numeric|min:0',
-            'service_charge_usd' => 'required|numeric|min:0',
-        ]);
+        $validated = $request->validate($this->rules());
 
-        $program->update([
-            'university_id'  => $request->university_id,
-            'name'           => $request->name,
-            'degree_level'   => $request->degree_level,
-            'duration_years' => $request->duration_years,
-            'tuition_fee_usd' => $request->tuition_fee,
-            'service_charge_usd' => $request->service_charge_usd,
-            'description'    => $request->description,
-            'is_active'      => $request->boolean('is_active'),
-        ]);
+        $program->update($this->programPayload($validated, $request, $program));
 
         return redirect()->route('admin.programs.index')->with('success', 'Program updated successfully.');
     }
@@ -84,5 +53,71 @@ class ProgramController extends Controller
     {
         Program::findOrFail($id)->delete();
         return back()->with('success', 'Program deleted successfully.');
+    }
+
+    private function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug !== '' ? $baseSlug : 'program';
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (Program::withTrashed()
+            ->where('slug', $slug)
+            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    private function rules(): array
+    {
+        return [
+            'university_id' => 'required|exists:universities,id',
+            'name' => 'required|string|max:255',
+            'degree_level' => 'required|in:foundation,diploma,bachelor,master,phd',
+            'field_of_study' => 'required|string|max:255',
+            'duration_years' => 'required|integer|min:1|max:10',
+            'tuition_fee' => 'required|numeric|min:0',
+            'service_charge_usd' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'language' => 'nullable|string|max:255',
+            'intake_months' => 'nullable|string|max:255',
+            'requirements' => 'nullable|string',
+            'career_prospects' => 'nullable|string',
+            'is_active' => 'nullable|boolean',
+            'is_featured' => 'nullable|boolean',
+        ];
+    }
+
+    private function programPayload(array $validated, Request $request, ?Program $program = null): array
+    {
+        $name = $validated['name'];
+
+        return [
+            'university_id' => $validated['university_id'],
+            'name' => $name,
+            'slug' => $program === null || $name !== $program->name || empty($program->slug)
+                ? $this->generateUniqueSlug($name, $program?->id)
+                : $program->slug,
+            'degree_level' => $validated['degree_level'],
+            'field_of_study' => $validated['field_of_study'],
+            'description' => $validated['description'],
+            'duration_years' => $validated['duration_years'],
+            'tuition_fee_usd' => $validated['tuition_fee'],
+            'service_charge_usd' => $validated['service_charge_usd'],
+            'language' => $validated['language'] ?? 'English',
+            'intake_months' => $validated['intake_months'] ?? null,
+            'requirements' => $validated['requirements'] ?? null,
+            'career_prospects' => $validated['career_prospects'] ?? null,
+            'is_active' => $program === null
+                ? $request->boolean('is_active', true)
+                : $request->boolean('is_active'),
+            'is_featured' => $request->boolean('is_featured'),
+        ];
     }
 }

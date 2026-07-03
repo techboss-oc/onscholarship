@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\University;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UniversityController extends Controller
 {
@@ -33,6 +34,7 @@ class UniversityController extends Controller
 
         $data = $request->except('logo', 'cover_image');
         $data['is_active'] = $request->boolean('is_active', true);
+        $data['slug'] = $this->generateUniqueSlug($request->name);
 
         if ($request->hasFile('logo')) {
             $data['logo'] = $request->file('logo')->store('universities/logos', 'public');
@@ -65,6 +67,9 @@ class UniversityController extends Controller
 
         $data = $request->except('logo', 'cover_image', '_method');
         $data['is_active'] = $request->boolean('is_active');
+        if ($request->name !== $university->name || empty($university->slug)) {
+            $data['slug'] = $this->generateUniqueSlug($request->name, $university->id);
+        }
 
         if ($request->hasFile('logo')) {
             if ($university->logo) Storage::disk('public')->delete($university->logo);
@@ -82,5 +87,24 @@ class UniversityController extends Controller
     {
         University::findOrFail($id)->delete();
         return back()->with('success', 'University deleted.');
+    }
+
+    private function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug !== '' ? $baseSlug : 'university';
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (University::withTrashed()
+            ->where('slug', $slug)
+            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }
