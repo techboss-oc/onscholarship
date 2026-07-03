@@ -65,11 +65,11 @@ html.dark #sc-filters select option { color: #ffffff; background: #0b1220; }
                 <form action="{{ url()->current() }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div class="lg:col-span-2">
                         <label class="block text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Keyword</label>
-                        <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="Scholarship or university..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
+                        <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="Scholarship or university..." class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b1120] text-[#0f172a] dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 caret-[#0D47A1] dark:caret-[#1FA463] focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
                     </div>
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">University</label>
-                        <select name="university_id" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
+                        <select name="university_id" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b1120] text-[#0f172a] dark:text-white focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
                             <option value="">All</option>
                             @foreach($universities as $uni)
                                 <option value="{{ $uni->id }}" {{ request('university_id') == $uni->id ? 'selected' : '' }}>{{ $uni->name }}</option>
@@ -78,7 +78,7 @@ html.dark #sc-filters select option { color: #ffffff; background: #0b1220; }
                     </div>
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Type</label>
-                        <select name="type" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
+                        <select name="type" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b1120] text-[#0f172a] dark:text-white focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
                             <option value="">All</option>
                             @foreach($types as $type)
                                 <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
@@ -87,7 +87,7 @@ html.dark #sc-filters select option { color: #ffffff; background: #0b1220; }
                     </div>
                     <div>
                         <label class="block text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Coverage</label>
-                        <input type="text" name="coverage" value="{{ request('coverage') }}" placeholder="e.g. Tuition, Stipend" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 text-gray-900 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
+                        <input type="text" name="coverage" value="{{ request('coverage') }}" placeholder="e.g. Tuition, Stipend" class="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b1120] text-[#0f172a] dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 caret-[#0D47A1] dark:caret-[#1FA463] focus:ring-2 focus:ring-[#f15a24] focus:border-[#f15a24]">
                     </div>
 
                     <div class="flex items-end gap-3 lg:col-span-5">
