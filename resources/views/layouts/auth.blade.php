@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
@@ -38,7 +38,7 @@
     </style>
 </head>
 
-<body class="min-h-full font-sans antialiased bg-white dark:bg-[#0b1120] text-gray-900 dark:text-gray-100 flex flex-col">
+<body class="min-h-full font-sans antialiased bg-white text-gray-900 flex flex-col">
 
     {{-- Minimal auth header --}}
     <header class="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-8 py-5">
