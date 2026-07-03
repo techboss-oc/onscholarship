@@ -15,6 +15,25 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <script>
+        (function() {
+            document.documentElement.dataset.forceDark = '1';
+            document.documentElement.classList.add('dark');
+            try {
+                localStorage.theme = 'dark';
+            } catch (e) {}
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.dataset.forceDark = '1';
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
+                try {
+                    localStorage.theme = 'dark';
+                } catch (e) {}
+            });
+        })();
+    </script>
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -175,6 +194,32 @@
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-nav);
+        }
+
+        /* --- Form Controls --- */
+        input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+        select,
+        textarea {
+            background: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border) !important;
+        }
+
+        input:not([type="checkbox"]):not([type="radio"]):not([type="file"])::placeholder,
+        textarea::placeholder {
+            color: var(--text-muted) !important;
+        }
+
+        input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+        select:focus,
+        textarea:focus {
+            border-color: #f15a24 !important;
+            box-shadow: 0 0 0 2px rgba(241, 90, 36, 0.18) !important;
+        }
+
+        select option {
+            background: #0d1e33;
+            color: #e8f0fe;
         }
 
         /* --- Stat Cards --- */
