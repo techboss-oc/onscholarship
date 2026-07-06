@@ -7,12 +7,12 @@
 </div>
 
 <div class="max-w-3xl admin-glass p-8 rounded-3xl border border-gray-200 dark:border-gray-700 text-sm">
-    <form action="{{ route('admin.programs.store') }}" method="POST">
+    <form action="{{ route('admin.programs.store') }}" method="POST" novalidate data-admin-validate="true">
         @csrf
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div class="col-span-2">
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">University <span class="text-red-500">*</span></label>
-                <select name="university_id" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
+                <select name="university_id" required data-field-label="University" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
                     <option value="">-- Select University --</option>
                     @foreach($universities as $uni)
                     <option value="{{ $uni->id }}" {{ old('university_id') == $uni->id ? 'selected' : '' }}>{{ $uni->name }}</option>
@@ -22,17 +22,17 @@
             </div>
             <div class="col-span-2">
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Program Name <span class="text-red-500">*</span></label>
-                <input type="text" name="name" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]" value="{{ old('name') }}">
+                <input type="text" name="name" required data-field-label="Program Name" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]" value="{{ old('name') }}">
                 @error('name')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Field of Study <span class="text-red-500">*</span></label>
-                <input type="text" name="field_of_study" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]" value="{{ old('field_of_study') }}" placeholder="e.g. Computer Science">
+                <input type="text" name="field_of_study" required data-field-label="Field of Study" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]" value="{{ old('field_of_study') }}" placeholder="e.g. Computer Science">
                 @error('field_of_study')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Degree Level <span class="text-red-500">*</span></label>
-                <select name="degree_level" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
+                <select name="degree_level" required data-field-label="Degree Level" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
                     <option value="foundation" {{ old('degree_level') == 'foundation' ? 'selected' : '' }}>Foundation</option>
                     <option value="diploma" {{ old('degree_level') == 'diploma' ? 'selected' : '' }}>Diploma</option>
                     <option value="bachelor" {{ old('degree_level', 'bachelor') == 'bachelor' ? 'selected' : '' }}>Bachelor's Degree</option>
@@ -43,7 +43,7 @@
             </div>
             <div>
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Duration (Years) <span class="text-red-500">*</span></label>
-                <input type="number" step="1" min="1" max="10" name="duration_years" required value="{{ old('duration_years', 4) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                <input type="number" step="1" min="1" max="10" name="duration_years" required data-field-label="Duration" value="{{ old('duration_years', 4) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
                 @error('duration_years')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div>
@@ -58,18 +58,18 @@
             </div>
             <div>
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Tuition Fee ($/Year) <span class="text-red-500">*</span></label>
-                <input type="number" step="0.01" name="tuition_fee" required value="{{ old('tuition_fee') }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                <input type="number" step="0.01" name="tuition_fee" required data-field-label="Tuition Fee" value="{{ old('tuition_fee') }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
                 @error('tuition_fee')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div>
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Service Charge ($) <span class="text-red-500">*</span></label>
-                <input type="number" step="0.01" name="service_charge_usd" required value="{{ old('service_charge_usd', 0) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
+                <input type="number" step="0.01" name="service_charge_usd" required data-field-label="Service Charge" value="{{ old('service_charge_usd', 0) }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24]">
                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">This is the admission processing service charge students or agents pay after the application is accepted.</p>
                 @error('service_charge_usd')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="col-span-2">
                 <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Description / Highlights <span class="text-red-500">*</span></label>
-                <textarea name="description" rows="4" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] border">{{ old('description') }}</textarea>
+                <textarea name="description" rows="4" required data-field-label="Description" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] border">{{ old('description') }}</textarea>
                 @error('description')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="col-span-2">

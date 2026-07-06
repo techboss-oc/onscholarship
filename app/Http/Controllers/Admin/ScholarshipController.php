@@ -25,7 +25,7 @@ class ScholarshipController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(), [], $this->validationAttributes());
 
         Scholarship::create($this->scholarshipPayload($validated, $request));
         return redirect()->route('admin.scholarships.index')->with('success', 'Scholarship created successfully.');
@@ -42,7 +42,7 @@ class ScholarshipController extends Controller
     public function update(Request $request, $id)
     {
         $scholarship = Scholarship::findOrFail($id);
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(), [], $this->validationAttributes());
 
         $scholarship->update($this->scholarshipPayload($validated, $request, $scholarship));
         return redirect()->route('admin.scholarships.index')->with('success', 'Scholarship updated.');
@@ -108,7 +108,7 @@ class ScholarshipController extends Controller
 
         while (Scholarship::withTrashed()
             ->where('slug', $slug)
-            ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
             ->exists()
         ) {
             $slug = $originalSlug . '-' . $counter;
@@ -116,5 +116,22 @@ class ScholarshipController extends Controller
         }
 
         return $slug;
+    }
+
+    private function validationAttributes(): array
+    {
+        return [
+            'name' => 'scholarship name',
+            'university_id' => 'university',
+            'type' => 'scholarship type',
+            'description' => 'scholarship description',
+            'eligibility' => 'eligibility',
+            'coverage' => 'coverage',
+            'amount_usd' => 'amount',
+            'duration' => 'duration',
+            'deadline' => 'deadline',
+            'intake_date' => 'intake date',
+            'available_slots' => 'available slots',
+        ];
     }
 }

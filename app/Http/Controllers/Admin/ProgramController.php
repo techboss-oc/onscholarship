@@ -24,7 +24,7 @@ class ProgramController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(), [], $this->validationAttributes());
 
         Program::create($this->programPayload($validated, $request));
 
@@ -42,7 +42,7 @@ class ProgramController extends Controller
     {
         $program = Program::findOrFail($id);
 
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(), [], $this->validationAttributes());
 
         $program->update($this->programPayload($validated, $request, $program));
 
@@ -118,6 +118,24 @@ class ProgramController extends Controller
                 ? $request->boolean('is_active', true)
                 : $request->boolean('is_active'),
             'is_featured' => $request->boolean('is_featured'),
+        ];
+    }
+
+    private function validationAttributes(): array
+    {
+        return [
+            'university_id' => 'university',
+            'name' => 'program name',
+            'degree_level' => 'degree level',
+            'field_of_study' => 'field of study',
+            'duration_years' => 'duration',
+            'tuition_fee' => 'tuition fee',
+            'service_charge_usd' => 'service charge',
+            'description' => 'program description',
+            'language' => 'language of instruction',
+            'intake_months' => 'intake months',
+            'requirements' => 'admission requirements',
+            'career_prospects' => 'career prospects',
         ];
     }
 }

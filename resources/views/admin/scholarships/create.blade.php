@@ -6,12 +6,12 @@
     <h1 class="text-2xl font-black text-[#0f2441] dark:text-white brand-font mt-2">Add New Scholarship</h1>
 </div>
 <div class="max-w-3xl admin-glass p-8 rounded-3xl border border-gray-200 dark:border-gray-700">
-    <form action="{{ route('admin.scholarships.store') }}" method="POST">
+    <form action="{{ route('admin.scholarships.store') }}" method="POST" novalidate data-admin-validate="true">
         @csrf
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Scholarship Name <span class="text-red-500">*</span></label>
-                <input type="text" name="name" required value="{{ old('name') }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
+                <input type="text" name="name" required data-field-label="Scholarship Name" value="{{ old('name') }}" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
                 @error('name')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="col-span-2">
@@ -26,7 +26,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Scholarship Type <span class="text-red-500">*</span></label>
-                <select name="type" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
+                <select name="type" required data-field-label="Scholarship Type" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
                     <option value="government" {{ old('type') == 'government' ? 'selected' : '' }}>Government</option>
                     <option value="university" {{ old('type') == 'university' ? 'selected' : '' }}>University</option>
                     <option value="private" {{ old('type') == 'private' ? 'selected' : '' }}>Private</option>
@@ -36,7 +36,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Coverage <span class="text-red-500">*</span></label>
-                <select name="coverage" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
+                <select name="coverage" required data-field-label="Coverage" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24]">
                     <option value="full" {{ old('coverage') == 'full' ? 'selected' : '' }}>Full</option>
                     <option value="partial" {{ old('coverage') == 'partial' ? 'selected' : '' }}>Partial</option>
                     <option value="tuition only" {{ old('coverage') == 'tuition only' ? 'selected' : '' }}>Tuition Only</option>
@@ -70,12 +70,12 @@
             </div>
             <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description <span class="text-red-500">*</span></label>
-                <textarea name="description" rows="3" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24] text-sm">{{ old('description') }}</textarea>
+                <textarea name="description" rows="3" required data-field-label="Description" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24] text-sm">{{ old('description') }}</textarea>
                 @error('description')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Eligibility <span class="text-red-500">*</span></label>
-                <textarea name="eligibility" rows="3" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24] text-sm">{{ old('eligibility') }}</textarea>
+                <textarea name="eligibility" rows="3" required data-field-label="Eligibility" class="w-full rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-[#f15a24] focus:border-[#f15a24] text-sm">{{ old('eligibility') }}</textarea>
                 @error('eligibility')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
             <div class="flex items-center gap-2">

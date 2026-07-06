@@ -398,6 +398,39 @@
             color: #6ee7b7;
         }
 
+        .flash-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .dark .flash-error {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+        }
+
+        .validation-modal-backdrop {
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .validation-modal {
+            background: var(--bg-card);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 24px 60px rgba(2, 6, 23, 0.38);
+        }
+
+        .validation-bullet {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .field-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.16) !important;
+        }
+
         /* Dropdown */
         .admin-dropdown {
             background: var(--bg-card);
@@ -427,8 +460,16 @@
 
 <body x-data="{ 
     sidebarOpen: window.innerWidth >= 1024,
-    profileOpen: false
-}" x-init="window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { sidebarOpen = true; } });">
+    profileOpen: false,
+    validationModalOpen: {{ $errors->any() ? 'true' : 'false' }},
+    validationErrors: {{ \Illuminate\Support\Js::from($errors->any() ? collect($errors->all())->unique()->values()->all() : []) }}
+}" x-init="
+    window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { sidebarOpen = true; } });
+    window.addEventListener('admin-validation-errors', (event) => {
+        validationErrors = event.detail.errors || [];
+        validationModalOpen = validationErrors.length > 0;
+    });
+">
 
     <div x-show="sidebarOpen && window.innerWidth < 1024"
         x-transition.opacity
@@ -655,7 +696,7 @@
             @endif
 
             @if(session('error'))
-            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl text-red-700 dark:bg-red-900/20 dark:text-red-300 flex justify-between items-center"
+            <div class="flash-error mb-6 p-4 flex justify-between items-center"
                 x-data="{ show: true }" x-show="show" x-transition>
                 <div class="flex items-center gap-3">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -669,10 +710,138 @@
             </div>
             @endif
 
+            <div x-cloak x-show="validationModalOpen" x-transition.opacity class="fixed inset-0 z-[90] flex items-center justify-center px-4">
+                <div class="validation-modal-backdrop absolute inset-0" @click="validationModalOpen = false"></div>
+                <div class="validation-modal relative w-full max-w-xl rounded-3xl p-6 sm:p-7">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-red-500" style="background: rgba(239, 68, 68, 0.15);">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-black brand-font" style="color: var(--text-primary);">Please Complete The Required Fields</h2>
+                                <p class="mt-1 text-sm" style="color: var(--text-secondary);">Review the items below, fill in the missing information, and submit the form again.</p>
+                            </div>
+                        </div>
+                        <button type="button" @click="validationModalOpen = false" class="rounded-xl p-2 text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text-primary)] transition" aria-label="Close validation popup">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="mt-6 space-y-3 max-h-[50vh] overflow-y-auto pr-1">
+                        <template x-for="(error, index) in validationErrors" :key="index">
+                            <div class="flex items-start gap-3 rounded-2xl border border-red-500/15 px-4 py-3" style="background: rgba(239, 68, 68, 0.06);">
+                                <span class="validation-bullet mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold" x-text="index + 1"></span>
+                                <p class="text-sm font-medium leading-6" style="color: var(--text-primary);" x-text="error"></p>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button type="button" @click="validationModalOpen = false" class="rounded-xl bg-[#f15a24] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#d94a1c]">
+                            Continue Editing
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             @yield('content')
             {{ $slot ?? '' }}
         </main>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form[data-admin-validate="true"]').forEach(function(form) {
+                var requiredFields = Array.from(form.querySelectorAll('[required]'));
+
+                function getFieldLabel(field) {
+                    if (field.dataset.fieldLabel) {
+                        return field.dataset.fieldLabel;
+                    }
+
+                    if (field.id) {
+                        var explicitLabel = form.querySelector('label[for="' + field.id + '"]');
+                        if (explicitLabel) {
+                            return explicitLabel.textContent.replace('*', '').trim();
+                        }
+                    }
+
+                    var wrapper = field.closest('div');
+                    var nearbyLabel = wrapper ? wrapper.querySelector('label') : null;
+
+                    if (nearbyLabel) {
+                        return nearbyLabel.textContent.replace('*', '').trim();
+                    }
+
+                    return field.name.replace(/_/g, ' ').replace(/\b\w/g, function(letter) {
+                        return letter.toUpperCase();
+                    });
+                }
+
+                function isEmpty(field) {
+                    if (field.type === 'checkbox' || field.type === 'radio') {
+                        return !field.checked;
+                    }
+
+                    if (field.tagName === 'SELECT') {
+                        return field.value === null || field.value === '';
+                    }
+
+                    return field.value.trim() === '';
+                }
+
+                function clearFieldError(field) {
+                    field.classList.remove('field-error');
+                }
+
+                function applyFieldError(field) {
+                    field.classList.add('field-error');
+                }
+
+                requiredFields.forEach(function(field) {
+                    ['input', 'change'].forEach(function(eventName) {
+                        field.addEventListener(eventName, function() {
+                            if (!isEmpty(field)) {
+                                clearFieldError(field);
+                            }
+                        });
+                    });
+                });
+
+                form.addEventListener('submit', function(event) {
+                    var missingFields = [];
+
+                    requiredFields.forEach(function(field) {
+                        if (isEmpty(field)) {
+                            applyFieldError(field);
+                            missingFields.push(getFieldLabel(field) + ' is required.');
+                        } else {
+                            clearFieldError(field);
+                        }
+                    });
+
+                    if (missingFields.length > 0) {
+                        event.preventDefault();
+                        window.dispatchEvent(new CustomEvent('admin-validation-errors', {
+                            detail: {
+                                errors: Array.from(new Set(missingFields))
+                            }
+                        }));
+
+                        var firstInvalid = requiredFields.find(isEmpty);
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 

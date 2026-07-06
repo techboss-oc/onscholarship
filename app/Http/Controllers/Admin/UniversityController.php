@@ -23,14 +23,7 @@ class UniversityController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'city'     => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'type'     => 'required|in:public,private',
-            'logo' => 'nullable|image|max:5120',
-            'cover_image' => 'nullable|image|max:5120',
-        ]);
+        $request->validate($this->rules(), [], $this->validationAttributes());
 
         $data = $request->except('logo', 'cover_image');
         $data['is_active'] = $request->boolean('is_active', true);
@@ -56,14 +49,7 @@ class UniversityController extends Controller
     public function update(Request $request, $id)
     {
         $university = University::findOrFail($id);
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'city'     => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'type'     => 'required|in:public,private',
-            'logo' => 'nullable|image|max:5120',
-            'cover_image' => 'nullable|image|max:5120',
-        ]);
+        $request->validate($this->rules(), [], $this->validationAttributes());
 
         $data = $request->except('logo', 'cover_image', '_method');
         $data['is_active'] = $request->boolean('is_active');
@@ -106,5 +92,33 @@ class UniversityController extends Controller
         }
 
         return $slug;
+    }
+
+    private function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'city' => 'required|string|max:100',
+            'province' => 'required|string|max:100',
+            'type' => 'required|in:public,private',
+            'description' => 'required|string',
+            'website' => 'nullable|url|max:255',
+            'logo' => 'nullable|image|max:5120',
+            'cover_image' => 'nullable|image|max:5120',
+        ];
+    }
+
+    private function validationAttributes(): array
+    {
+        return [
+            'name' => 'university name',
+            'city' => 'city',
+            'province' => 'province',
+            'type' => 'university type',
+            'description' => 'university description',
+            'website' => 'website URL',
+            'logo' => 'university logo',
+            'cover_image' => 'cover image',
+        ];
     }
 }
